@@ -1,10 +1,387 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="ko">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-  <body>
-    <p>Zeetheer</p>
-  </body>
+    <title>카이사르 암호 회전판</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* 배경색 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-x: hidden; /* 가로 스크롤 방지 */
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 1.5rem; /* 둥근 모서리 */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* 그림자 */
+            padding: 2.5rem; /* 내부 여백 */
+            max-width: 90%; /* 최대 너비 */
+            width: 700px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .wheel-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 2rem auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .outer-wheel, .inner-wheel {
+            position: absolute;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease-out; /* 부드러운 회전 애니메이션 */
+        }
+        .outer-wheel {
+            width: 300px;
+            height: 300px;
+            background-color: #e2e8f0; /* 바깥 바퀴 색상 */
+            border: 4px solid #cbd5e1; /* 테두리 */
+        }
+        .inner-wheel {
+            width: 200px;
+            height: 200px;
+            background-color: #93c5fd; /* 안쪽 바퀴 색상 */
+            border: 4px solid #60a5fa; /* 테두리 */
+            transform-origin: center center; /* 회전 중심 설정 */
+        }
+        .wheel-letter {
+            position: absolute;
+            font-weight: 600;
+            color: #334155;
+            user-select: none; /* 텍스트 선택 방지 */
+        }
+        .inner-letter {
+            color: #1e3a8a;
+        }
+        .center-circle {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: #1e3a8a;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.25rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .input-area, .output-area {
+            width: 100%;
+            min-height: 80px;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .input-area:focus, .output-area:focus {
+            border-color: #3b82f6;
+        }
+        .output-area {
+            background-color: #e2e8f0; /* 출력 영역 배경색 */
+            color: #4a5568;
+            cursor: default;
+        }
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .slider {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 8px;
+            background: #cbd5e1;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+            border-radius: 4px;
+        }
+        .slider:hover {
+            opacity: 1;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .btn {
+            background-color: #3b82f6;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn:hover {
+            background-color: #2563eb;
+            transform: translateY(-1px);
+        }
+        .btn:active {
+            background-color: #1d4ed8;
+            transform: translateY(0);
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 640px) {
+            .container {
+                padding: 1.5rem;
+            }
+            .wheel-container {
+                width: 250px;
+                height: 250px;
+                margin-bottom: 1.5rem;
+            }
+            .outer-wheel {
+                width: 250px;
+                height: 250px;
+            }
+            .inner-wheel {
+                width: 170px;
+                height: 170px;
+            }
+            .wheel-letter {
+                font-size: 0.9rem;
+            }
+            .center-circle {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            .input-area, .output-area {
+                min-height: 60px;
+                font-size: 0.9rem;
+            }
+            .btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">카이사르 암호 회전판</h1>
+
+        <div class="wheel-container">
+            <div class="outer-wheel" id="outerWheel"></div>
+            <div class="inner-wheel" id="innerWheel"></div>
+            <div class="center-circle" id="shiftDisplay">0</div>
+        </div>
+
+        <div class="slider-container">
+            <label for="shiftSlider" class="text-lg font-semibold text-gray-700">이동 값: <span id="shiftValueLabel">0</span></label>
+            <input type="range" min="0" max="25" value="0" class="slider" id="shiftSlider">
+        </div>
+
+        <textarea id="inputText" class="input-area" placeholder="여기에 텍스트를 입력하세요..."></textarea>
+        <textarea id="outputText" class="output-area" placeholder="결과가 여기에 표시됩니다..." readonly></textarea>
+
+        <div class="button-group">
+            <button id="encryptBtn" class="btn">암호화</button>
+            <button id="decryptBtn" class="btn">복호화</button>
+        </div>
+    </div>
+
+    <script>
+        const outerWheel = document.getElementById('outerWheel');
+        const innerWheel = document.getElementById('innerWheel');
+        const shiftSlider = document.getElementById('shiftSlider');
+        const shiftValueLabel = document.getElementById('shiftValueLabel');
+        const shiftDisplay = document.getElementById('shiftDisplay');
+        const inputText = document.getElementById('inputText');
+        const outputText = document.getElementById('outputText');
+        const encryptBtn = document.getElementById('encryptBtn');
+        const decryptBtn = document.getElementById('decryptBtn');
+
+        const ALPHABET_SIZE = 26;
+        const alphabet = Array.from({ length: ALPHABET_SIZE }, (_, i) => String.fromCharCode('A'.charCodeAt(0) + i));
+
+        /**
+         * 바퀴에 알파벳 글자를 배치합니다.
+         * @param {HTMLElement} wheelElement - 알파벳을 배치할 바퀴 요소입니다.
+         * @param {string} type - 'outer' 또는 'inner'로, 글자 스타일을 결정합니다.
+         * @param {number} radius - 글자를 배치할 원의 반지름입니다.
+         */
+        function populateWheel(wheelElement, type, radius) {
+            wheelElement.innerHTML = ''; // 기존 글자 지우기
+            alphabet.forEach((char, index) => {
+                const letterDiv = document.createElement('div');
+                letterDiv.classList.add('wheel-letter');
+                if (type === 'inner') {
+                    letterDiv.classList.add('inner-letter');
+                }
+                letterDiv.textContent = char;
+
+                // 글자의 위치를 계산합니다 (중심에서 원형으로)
+                const angle = (360 / ALPHABET_SIZE) * index - 90; // -90도 오프셋으로 'A'를 맨 위로 정렬
+                const x = radius * Math.cos(angle * Math.PI / 180);
+                const y = radius * Math.sin(angle * Math.PI / 180);
+
+                letterDiv.style.transform = `translate(${x}px, ${y}px)`;
+                wheelElement.appendChild(letterDiv);
+            });
+        }
+
+        /**
+         * 바퀴를 회전시킵니다.
+         * @param {number} shift - 이동 값 (0-25)입니다.
+         */
+        function rotateWheel(shift) {
+            // 각 알파벳 글자당 360/26 = 13.846도
+            // 이동 값에 따라 안쪽 바퀴를 회전시킵니다.
+            const rotationAngle = -shift * (360 / ALPHABET_SIZE);
+            innerWheel.style.transform = `rotate(${rotationAngle}deg)`;
+
+            // 중앙 이동 값 표시 업데이트
+            shiftDisplay.textContent = shift;
+            shiftValueLabel.textContent = shift;
+        }
+
+        /**
+         * 카이사르 암호화/복호화 논리입니다.
+         * @param {string} text - 처리할 텍스트입니다.
+         * @param {number} shift - 이동 값입니다.
+         * @param {boolean} isEncrypt - 암호화이면 true, 복호화이면 false입니다.
+         * @returns {string} 처리된 텍스트입니다.
+         */
+        function caesarCipher(text, shift, isEncrypt) {
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                let char = text[i];
+                if (char >= 'A' && char <= 'Z') {
+                    let startCode = 'A'.charCodeAt(0);
+                    let charCode = char.charCodeAt(0);
+                    let shiftedCode;
+                    if (isEncrypt) {
+                        shiftedCode = startCode + (charCode - startCode + shift) % ALPHABET_SIZE;
+                    } else {
+                        // 복호화 시 음수 이동을 처리하기 위해 +ALPHABET_SIZE를 추가합니다.
+                        shiftedCode = startCode + (charCode - startCode - shift + ALPHABET_SIZE) % ALPHABET_SIZE;
+                    }
+                    result += String.fromCharCode(shiftedCode);
+                } else if (char >= 'a' && char <= 'z') {
+                    let startCode = 'a'.charCodeAt(0);
+                    let charCode = char.charCodeAt(0);
+                    let shiftedCode;
+                    if (isEncrypt) {
+                        shiftedCode = startCode + (charCode - startCode + shift) % ALPHABET_SIZE;
+                    } else {
+                        shiftedCode = startCode + (charCode - startCode - shift + ALPHABET_SIZE) % ALPHABET_SIZE;
+                    }
+                    result += String.fromCharCode(shiftedCode);
+                } else {
+                    result += char; // 알파벳이 아닌 문자는 변경하지 않고 유지합니다.
+                }
+            }
+            return result;
+        }
+
+        // 이벤트 리스너 설정
+
+        // 슬라이더 변경 시 바퀴 회전 및 텍스트 업데이트
+        shiftSlider.addEventListener('input', () => {
+            const shift = parseInt(shiftSlider.value);
+            rotateWheel(shift);
+            // 슬라이더 이동 시마다 즉시 암호화/복호화 적용
+            if (encryptBtn.classList.contains('active')) { // 'active' 클래스로 현재 모드 확인
+                outputText.value = caesarCipher(inputText.value.toUpperCase(), shift, true);
+            } else if (decryptBtn.classList.contains('active')) {
+                outputText.value = caesarCipher(inputText.value.toUpperCase(), shift, false);
+            } else {
+                // 초기 로드 시 또는 모드 미선택 시 기본적으로 암호화 모드
+                outputText.value = caesarCipher(inputText.value.toUpperCase(), shift, true);
+            }
+        });
+
+        // 텍스트 입력 시 암호화/복호화 적용
+        inputText.addEventListener('input', () => {
+            const shift = parseInt(shiftSlider.value);
+            if (encryptBtn.classList.contains('active')) {
+                outputText.value = caesarCipher(inputText.value.toUpperCase(), shift, true);
+            } else if (decryptBtn.classList.contains('active')) {
+                outputText.value = caesarCipher(inputText.value.toUpperCase(), shift, false);
+            } else {
+                // 초기 로드 시 또는 모드 미선택 시 기본적으로 암호화 모드
+                outputText.value = caesarCipher(inputText.value.toUpperCase(), shift, true);
+            }
+        });
+
+        // 암호화 버튼 클릭
+        encryptBtn.addEventListener('click', () => {
+            const shift = parseInt(shiftSlider.value);
+            outputText.value = caesarCipher(inputText.value.toUpperCase(), shift, true);
+            encryptBtn.classList.add('active'); // 현재 모드 활성화 표시
+            decryptBtn.classList.remove('active');
+        });
+
+        // 복호화 버튼 클릭
+        decryptBtn.addEventListener('click', () => {
+            const shift = parseInt(shiftSlider.value);
+            outputText.value = caesarCipher(inputText.value.toUpperCase(), shift, false);
+            decryptBtn.classList.add('active'); // 현재 모드 활성화 표시
+            encryptBtn.classList.remove('active');
+        });
+
+        // 페이지 로드 시 초기화
+        window.onload = function() {
+            // 바퀴에 글자 채우기 (반지름은 바퀴 크기에 따라 조절)
+            populateWheel(outerWheel, 'outer', 130); // outerWheel 지름 300px -> 반지름 150px, 글자 배치 반지름은 약간 작게
+            populateWheel(innerWheel, 'inner', 80); // innerWheel 지름 200px -> 반지름 100px, 글자 배치 반지름은 약간 작게
+
+            // 초기 슬라이더 값에 따라 바퀴 회전 및 텍스트 업데이트
+            const initialShift = parseInt(shiftSlider.value);
+            rotateWheel(initialShift);
+            // 초기 로드 시 기본적으로 암호화 모드 활성화
+            encryptBtn.classList.add('active');
+            outputText.value = caesarCipher(inputText.value.toUpperCase(), initialShift, true);
+        };
+    </script>
+</body>
 </html>
+
