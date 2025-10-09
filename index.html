@@ -643,7 +643,7 @@
         }
 
         function shareScore() {
-            const textToCopy = `[카이사르 암호 챌린지]에서 ${score}점을 달성했어요! 여러분도 도전해보세요!`;
+            const textToCopy = `[카이사르 암호 챌린지]에서 ${score}점을 달성했어요!`;
             navigator.clipboard.writeText(textToCopy).then(() => {
                 const toast = document.getElementById('share-toast');
                 toast.classList.remove('hidden');
