@@ -11,6 +11,8 @@
         body {
             font-family: 'Noto Sans KR', sans-serif;
             touch-action: manipulation;
+            background-color: #f0f2f5;
+            background-image: linear-gradient(135deg, #e9ecf2 0%, #f7f8fa 100%);
         }
 
         .cipher-wheel-container {
@@ -42,7 +44,6 @@
             width: 75%;
             height: 75%;
             border: 2px solid #718096;
-            /* 원판 전체에 회전 애니메이션 적용 */
             transition: transform 0.4s ease-in-out;
         }
 
@@ -66,13 +67,10 @@
 
         .inner-letter {
             height: 240px;
-            /* 320px * 0.75 */
-            /* 개별 애니메이션 제거 */
         }
 
         .inner-letter-text {
             display: inline-block;
-            /* 글자 보정을 위한 애니메이션 추가 */
             transition: transform 0.4s ease-in-out;
         }
 
@@ -98,7 +96,6 @@
             z-index: 50;
         }
 
-        /* 기본 버튼 스타일 */
         .btn {
             @apply px-6 py-3 rounded-lg font-bold text-white shadow-md transition-all duration-300 transform;
         }
@@ -119,12 +116,10 @@
             @apply bg-teal-500 hover:bg-teal-600 active:scale-95;
         }
 
-        /* 입력창 포커스 효과 */
         .name-input:focus {
             @apply ring-2 ring-blue-400 border-transparent;
         }
 
-        /* 피드백 애니메이션 */
         .feedback-correct {
             animation: correct-pulse 0.5s;
         }
@@ -252,8 +247,6 @@
         </div>
     </div>
 
-    <!-- 이하 모달 및 스크립트 코드는 생략 -->
-    <!-- ... (previous modal and other HTML structure) ... -->
     <div id="game-over-modal" class="hidden modal-backdrop">
         <div
             class="bg-white w-11/12 max-w-sm p-8 rounded-2xl shadow-xl text-center transform transition-all scale-95 opacity-0">
@@ -321,13 +314,13 @@
         import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
-                apiKey: "AIzaSyArTDw-8Gw9wjhQbhWySalh1kS7_heePRY",
-                authDomain: "ceaser-board.firebaseapp.com",
-                projectId: "ceaser-board",
-                storageBucket: "ceaser-board.firebasestorage.app",
-                messagingSenderId: "597014903425",
-                appId: "1:597014903425:web:e85e8f9e4bea419aaa6b80",
-                measurementId: "G-T122J8B1CK"
+            apiKey: "AIzaSyArTDw-8Gw9wjhQbhWySalh1kS7_heePRY",
+            authDomain: "ceaser-board.firebaseapp.com",
+            projectId: "ceaser-board",
+            storageBucket: "ceaser-board.firebasestorage.app",
+            messagingSenderId: "597014903425",
+            appId: "1:597014903425:web:e85e8f9e4bea419aaa6b80",
+            measurementId: "G-T122J8B1CK"
         };
 
         let db, auth;
@@ -404,13 +397,11 @@
                 innerLetter.innerHTML = `<span class="inner-letter-text" data-angle="${angle}">${ALPHABET[i]}</span>`;
                 innerWheel.appendChild(innerLetter);
             }
-            // 초기 글자 위치 설정을 위해 호출
             updateCipherWheel();
         }
 
         function updateCipherWheel() {
             innerWheel.style.transform = `translate(-50%, -50%) rotate(${cumulativeAngle}deg)`;
-            // 글자 보정 로직 추가
             const innerLetterTexts = document.querySelectorAll('.inner-letter-text');
             innerLetterTexts.forEach(textEl => {
                 const initialAngle = parseFloat(textEl.dataset.angle);
