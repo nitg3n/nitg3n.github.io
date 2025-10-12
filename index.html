@@ -175,16 +175,16 @@
 
     <div id="app-container" class="w-full max-w-md mx-auto text-center">
 
-        <!-- 게임 모드 선택 화면 -->
+        <!-- 챌린지 선택 화면 -->
         <div id="mode-selection-screen" class="bg-white p-8 rounded-2xl shadow-lg">
             <h1 class="text-4xl font-bold mb-2 text-gray-700">카이사르 암호 챌린지</h1>
-            <p class="text-gray-500 mb-8">플레이할 게임 모드를 선택하세요.</p>
+            <p class="text-gray-500 mb-8">플레이할 챌린지를 선택하세요.</p>
             <div class="space-y-4">
                 <button id="start-time-attack" class="btn btn-blue w-full text-lg">
-                    ⏰ 타임어택! 암호 해독
+                    ⏰ 암호 해독 타임어택!
                 </button>
                 <button id="start-find-key" class="btn btn-teal w-full text-lg">
-                    🔑 키(Key)를 찾아라!
+                    🔑 키를 찾아라!
                 </button>
                 <button id="show-tutorial" class="btn btn-gray w-full text-lg">
                     📖 게임 방법
@@ -215,7 +215,7 @@
             <!-- 쉬프트 조작 컨트롤 -->
             <div id="shift-control" class="flex items-center justify-center space-x-4 mb-6">
                 <button id="decrease-shift" class="btn-control">-</button>
-                <span id="user-shift-display" class="key-display text-lg">Shift: +0</span>
+                <span id="user-shift-display" class="key-display text-lg">이동 값: +0</span>
                 <button id="increase-shift" class="btn-control">+</button>
             </div>
 
@@ -242,7 +242,7 @@
                     class="w-full p-4 text-2xl text-center border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                     placeholder="정답 입력" autocomplete="off" autocapitalize="off">
                 <ul id="answer-list" class="hidden space-y-2 max-h-64 overflow-y-auto"></ul>
-                <button id="check-key-btn" class="btn btn-green w-full text-lg hidden">이 Key로 확인</button>
+                <button id="check-key-btn" class="btn btn-green w-full text-lg hidden">이 키로 확인</button>
             </div>
         </div>
     </div>
@@ -281,22 +281,22 @@
             <h2 class="text-3xl font-bold mb-4">📖 게임 방법</h2>
             <div class="text-left space-y-6 text-gray-700">
                 <div>
-                    <strong class="text-blue-500 text-xl">⏰ 타임어택! 암호 해독</strong>
+                    <strong class="text-blue-500 text-xl">⏰ 암호 해독 타임어택!</strong>
                     <ul class="list-disc list-inside mt-2 space-y-1">
                         <li>화면에 나타난 <strong class="font-mono bg-gray-200 px-1 rounded">암호문</strong>과 <strong
-                                class="font-mono bg-gray-200 px-1 rounded">Key(Shift 값)</strong>를 확인합니다.</li>
-                        <li>주어진 Key에 맞게 암호판을 조작하거나 암산하여 원본 단어를 해독합니다.</li>
+                                class="font-mono bg-gray-200 px-1 rounded">키(이동 값)</strong>를 확인합니다.</li>
+                        <li>주어진 키에 맞게 암호판을 조작하거나 암산하여 원본 단어를 해독합니다.</li>
                         <li>해독한 단어를 빠르게 입력하여 점수를 얻습니다.</li>
                     </ul>
                 </div>
                 <div>
-                    <strong class="text-teal-500 text-xl">🔑 키(Key)를 찾아라!</strong>
+                    <strong class="text-teal-500 text-xl">🔑 키를 찾아라!</strong>
                     <ul class="list-disc list-inside mt-2 space-y-1">
                         <li><strong class="font-mono bg-gray-200 px-1 rounded">암호문</strong>과 <strong
                                 class="font-mono bg-green-200 px-1 rounded">원본 단어(평문)</strong>가 함께 주어집니다.</li>
                         <li>암호판을 <strong class="font-mono bg-gray-200 px-1 rounded">+</strong> / <strong
-                                class="font-mono bg-gray-200 px-1 rounded">-</strong> 버튼으로 돌려 암호화에 사용된 Key를 찾습니다.</li>
-                        <li>올바른 Key를 찾았다면 '이 Key로 확인' 버튼을 눌러 점수를 얻습니다.</li>
+                                class="font-mono bg-gray-200 px-1 rounded">-</strong> 버튼으로 돌려 암호화에 사용된 키를 찾습니다.</li>
+                        <li>올바른 키를 찾았다면 '이 키로 확인' 버튼을 눌러 점수를 얻습니다.</li>
                     </ul>
                 </div>
             </div>
@@ -447,7 +447,7 @@
                 problemKeyDisplay.classList.remove('hidden');
                 originalWordDisplay.classList.add('hidden');
                 arrowDisplay.classList.add('hidden');
-                document.getElementById('instruction').textContent = "주어진 Key로 암호문을 해독하여 입력하세요.";
+                document.getElementById('instruction').textContent = "주어진 키로 암호문을 해독하여 입력하세요.";
                 nextQuestion_TimeAttack();
             } else { // find-key
                 answerInput.style.display = 'none';
@@ -455,7 +455,7 @@
                 problemKeyDisplay.classList.add('hidden');
                 originalWordDisplay.classList.remove('hidden');
                 arrowDisplay.classList.remove('hidden');
-                document.getElementById('instruction').textContent = "암호문을 평문으로 바꾸는 Key를 찾으세요.";
+                document.getElementById('instruction').textContent = "암호문을 평문으로 바꾸는 키를 찾으세요.";
                 nextQuestion_FindKey();
             }
 
