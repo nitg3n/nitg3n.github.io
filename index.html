@@ -175,7 +175,6 @@
 
     <div id="app-container" class="w-full max-w-md mx-auto text-center">
 
-        <!-- 챌린지 선택 화면 -->
         <div id="mode-selection-screen" class="bg-white p-8 rounded-2xl shadow-lg">
             <h1 class="text-4xl font-bold mb-2 text-gray-700">카이사르 암호 챌린지</h1>
             <p class="text-gray-500 mb-8">플레이할 챌린지를 선택하세요.</p>
@@ -192,9 +191,7 @@
             </div>
         </div>
 
-        <!-- 메인 게임 화면 -->
         <div id="game-screen" class="hidden bg-white p-6 md:p-8 rounded-2xl shadow-lg">
-            <!-- 헤더: 점수 및 타이머 -->
             <div class="flex justify-between items-center mb-6">
                 <div class="text-left">
                     <span class="text-gray-500">점수</span>
@@ -206,20 +203,17 @@
                 </div>
             </div>
 
-            <!-- 카이사르 암호판 -->
             <div class="cipher-wheel-container mx-auto mb-4">
                 <div class="cipher-wheel outer-wheel"></div>
                 <div id="inner-wheel" class="cipher-wheel inner-wheel"></div>
             </div>
 
-            <!-- 쉬프트 조작 컨트롤 -->
             <div id="shift-control" class="flex items-center justify-center space-x-4 mb-6">
                 <button id="decrease-shift" class="btn-control">-</button>
                 <span id="user-shift-display" class="key-display text-lg">이동 값: +0</span>
                 <button id="increase-shift" class="btn-control">+</button>
             </div>
 
-            <!-- 문제 표시 영역 -->
             <div id="problem-area" class="mb-6">
                 <p id="instruction" class="text-gray-500 mb-2"></p>
                 <p id="problem-key-display" class="key-display text-lg mb-4 inline-block hidden">Key: +3</p>
@@ -236,11 +230,11 @@
                 </div>
             </div>
 
-            <!-- 정답 입력 영역 -->
             <div id="answer-area">
                 <input type="text" id="answer-input"
                     class="w-full p-4 text-2xl text-center border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                     placeholder="정답 입력" autocomplete="off" autocapitalize="off">
+                <button id="submit-answer-btn" class="btn btn-green w-full text-lg mt-4 hidden">정답 제출</button>
                 <ul id="answer-list" class="hidden space-y-2 max-h-64 overflow-y-auto"></ul>
                 <button id="check-key-btn" class="btn btn-green w-full text-lg hidden">이 키로 확인</button>
             </div>
@@ -285,7 +279,8 @@
                     <ul class="list-disc list-inside mt-2 space-y-1">
                         <li>화면에 나타난 <strong class="font-mono bg-red-200 px-1 rounded">암호문</strong>과 <strong
                                 class="font-mono bg-blue-200 px-1 rounded">키(이동 값)</strong>를 확인합니다.</li>
-                        <li>주어진 <strong class="font-mono bg-blue-200 px-1 rounded">키</strong>에 맞게 암호판을 조작하거나 암산하여 원본 단어를 해독합니다.</li>
+                        <li>주어진 <strong class="font-mono bg-blue-200 px-1 rounded">키</strong>에 맞게 암호판을 조작하거나 암산하여 원본 단어를
+                            해독합니다.</li>
                         <li><strong class="font-mono bg-gray-200 px-1 rounded">해독한 단어</strong>를 빠르게 입력하여 점수를 얻습니다.</li>
                     </ul>
                 </div>
@@ -296,7 +291,8 @@
                                 class="font-mono bg-green-200 px-1 rounded">원본 단어(평문)</strong>가 함께 주어집니다.</li>
                         <li>암호판을 <strong class="font-mono bg-gray-200 px-1 rounded">+</strong> / <strong
                                 class="font-mono bg-gray-200 px-1 rounded">-</strong> 버튼으로 돌려 암호화에 사용된 키를 찾습니다.</li>
-                        <li>올바른 <strong class="font-mono bg-gray-200 px-1 rounded">키</strong>를 찾았다면 '이 키로 확인' 버튼을 눌러 점수를 얻습니다.</li>
+                        <li>올바른 <strong class="font-mono bg-gray-200 px-1 rounded">키</strong>를 찾았다면 '이 키로 확인' 버튼을 눌러 점수를
+                            얻습니다.</li>
                     </ul>
                 </div>
             </div>
@@ -362,6 +358,7 @@
         const userShiftDisplayEl = document.getElementById('user-shift-display');
         const checkKeyBtn = document.getElementById('check-key-btn');
         const arrowDisplay = document.getElementById('arrow-display');
+        const submitAnswerBtn = document.getElementById('submit-answer-btn');
 
         const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         const wordList = ["BALL", "BOOK", "CAKE", "DESK", "DOLL", "FISH", "FROG", "GIFT", "HAND", "KING", "LAMP", "LION", "MILK", "MOON", "PARK", "PLAY", "STAR", "TREE", "APPLE", "BREAD", "CHAIR", "CLOUD", "DREAM", "EARTH", "GREEN", "HAPPY", "HEART", "JUICE", "MOUSE", "MUSIC", "PIZZA", "SMILE", "SPOON", "TIGER", "WATER", "WORLD", "BANANA", "BUTTER", "CANDLE", "FAMILY", "FLOWER", "FRIEND", "KITTEN", "ORANGE", "PENCIL", "PURPLE", "SCHOOL", "SUMMER", "WINDOW", "YELLOW"];
@@ -443,6 +440,7 @@
 
             if (mode === 'time-attack') {
                 answerInput.style.display = 'block';
+                submitAnswerBtn.classList.remove('hidden');
                 checkKeyBtn.classList.add('hidden');
                 problemKeyDisplay.classList.remove('hidden');
                 originalWordDisplay.classList.add('hidden');
@@ -451,6 +449,7 @@
                 nextQuestion_TimeAttack();
             } else { // find-key
                 answerInput.style.display = 'none';
+                submitAnswerBtn.classList.add('hidden');
                 checkKeyBtn.classList.remove('hidden');
                 problemKeyDisplay.classList.add('hidden');
                 originalWordDisplay.classList.remove('hidden');
@@ -669,6 +668,7 @@
             updateShiftUI();
         });
         checkKeyBtn.addEventListener('click', checkAnswer_FindKey);
+        submitAnswerBtn.addEventListener('click', checkAnswer_TimeAttack);
         document.getElementById('submit-score').addEventListener('click', submitScore);
         document.getElementById('share-score').addEventListener('click', shareScore);
         document.getElementById('show-leaderboard').addEventListener('click', fetchAndShowLeaderboard);
@@ -678,6 +678,10 @@
 
         createCipherWheel();
     </script>
+
+    <footer class="fixed bottom-0 left-0 right-0 p-4 text-center">
+        <a href="privacy.html" target="_blank" class="text-xs text-gray-400 hover:text-gray-600 underline">개인정보 처리방침</a>
+    </footer>
 </body>
 
 </html>
