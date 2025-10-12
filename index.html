@@ -15,10 +15,12 @@
             background-image: linear-gradient(135deg, #e9ecf2 0%, #f7f8fa 100%);
         }
 
+        /* --- 수정된 부분 --- */
         .cipher-wheel-container {
             position: relative;
-            width: 320px;
-            height: 320px;
+            /* 기존 320px에서 280px로 크기 축소 */
+            width: 280px;
+            height: 280px;
         }
 
         .cipher-wheel {
@@ -49,25 +51,36 @@
 
         .letter {
             position: absolute;
-            font-size: 16px;
+            /* 폰트 크기 조정 */
+            font-size: 14px;
             font-weight: bold;
             text-align: center;
-            padding-top: 8px;
-            width: 24px;
-            height: 320px;
+            padding-top: 6px;
+            /* 패딩 조정 */
+            width: 20px;
+            /* 너비 조정 */
+            /* 컨테이너 크기에 맞춰 높이 수정 */
+            height: 280px;
             top: 0;
-            left: calc(50% - 12px);
+            left: calc(50% - 10px);
+            /* 너비에 맞춰 중앙 정렬 */
             transform-origin: center center;
             color: #2d3748;
         }
+
+        /* --- 여기까지 --- */
 
         .outer-letter>span {
             color: #4a5568;
         }
 
+        /* --- 수정된 부분 --- */
         .inner-letter {
-            height: 240px;
+            /* 내부 휠 크기에 맞춰 높이 수정 (280px * 75% = 210px) */
+            height: 210px;
         }
+
+        /* --- 여기까지 --- */
 
         .inner-letter-text {
             display: inline-block;
@@ -171,9 +184,9 @@
     </style>
 </head>
 
-<body class="bg-gray-100 text-gray-800 flex items-center justify-center min-h-screen p-4">
+<body class="bg-gray-100 text-gray-800 flex flex-col items-center min-h-screen p-4">
 
-    <div id="app-container" class="w-full max-w-md mx-auto text-center">
+    <main id="app-container" class="w-full max-w-md mx-auto text-center my-auto">
 
         <div id="mode-selection-screen" class="bg-white p-8 rounded-2xl shadow-lg">
             <h1 class="text-4xl font-bold mb-2 text-gray-700">카이사르 암호 챌린지</h1>
@@ -248,7 +261,7 @@
                     키로 확인</button>
             </div>
         </div>
-    </div>
+    </main>
 
     <div id="game-over-modal" class="hidden modal-backdrop">
         <div
@@ -739,7 +752,7 @@
         createCipherWheel();
     </script>
 
-    <footer class="fixed bottom-0 left-0 right-0 p-4 text-center">
+    <footer class="p-4 text-center">
         <a href="privacy.html" target="_blank" class="text-xs text-gray-400 hover:text-gray-600 underline">개인정보 처리방침</a>
     </footer>
 </body>
