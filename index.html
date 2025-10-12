@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>카이사르 암호 챌린지</title>
+    <title>카이사르 암호판 챌린지</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -185,6 +185,9 @@
                 <button id="start-find-key" class="btn btn-teal w-full text-lg">
                     🔑 키를 찾아라!
                 </button>
+                <button id="show-leaderboard-main" class="btn btn-gray w-full text-lg">
+                    🏆 리더보드 보기
+                </button>
                 <button id="show-tutorial" class="btn btn-gray w-full text-lg">
                     📖 게임 방법
                 </button>
@@ -199,7 +202,7 @@
                 </div>
                 <div class="text-right">
                     <span class="text-gray-500">남은 시간</span>
-                    <p id="timer" class="text-3xl font-bold">150</p>
+                    <p id="timer" class="text-3xl font-bold">90</p>
                 </div>
             </div>
 
@@ -217,16 +220,19 @@
             <div id="problem-area" class="mb-6">
                 <p id="instruction" class="text-gray-500 mb-2"></p>
                 <p id="problem-key-display" class="key-display text-lg mb-4 inline-block hidden">Key: +3</p>
-                <div class="flex items-center justify-center space-x-2">
-                    <p id="encrypted-word" class="text-4xl font-bold tracking-widest bg-gray-100 p-4 rounded-lg"></p>
+                <div class="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-2">
+                    <p id="encrypted-word"
+                        class="text-3xl sm:text-4xl font-bold tracking-widest bg-gray-100 p-3 sm:p-4 rounded-lg"></p>
                     <div id="arrow-display" class="hidden">
-                        <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-8 h-8 text-gray-500 transform rotate-90 sm:rotate-0" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                         </svg>
                     </div>
                     <p id="original-word-display"
-                        class="text-4xl font-bold tracking-widest bg-green-100 p-4 rounded-lg hidden"></p>
+                        class="text-3xl sm:text-4xl font-bold tracking-widest bg-green-100 p-3 sm:p-4 rounded-lg hidden">
+                    </p>
                 </div>
             </div>
 
@@ -280,12 +286,12 @@
                 <div>
                     <strong class="text-blue-500 text-xl">⏰ 암호 해독 타임어택!</strong>
                     <p class="mt-2">
-                        <strong>목표</strong>: 암호문과 키를 보고 원래 단어를 맞히는 게임!
+                        **목표:** 암호문과 키를 보고 원래 단어를 맞히는 게임!
                     </p>
                     <ul class="list-disc list-inside mt-2 space-y-1">
                         <li>화면에 나오는 <strong class="font-mono bg-red-200 px-1 rounded">암호문</strong>과 <strong
                                 class="font-mono bg-blue-200 px-1 rounded">키</strong>를 확인하세요.</li>
-                        <li><strong class="font-mono bg-blue-200 px-1 rounded">키</strong>만큼 알파벳을 <strong>반대로</strong> 밀어서 원래 단어를
+                        <li><strong class="font-mono bg-blue-200 px-1 rounded">키</strong>만큼 알파벳을 **반대로** 밀어서 원래 단어를
                             추리합니다. (예: 키가 +3일 때 암호 D는 A가 됩니다)</li>
                         <li>정답을 빠르게 입력해서 높은 점수를 얻어보세요!</li>
                     </ul>
@@ -293,11 +299,11 @@
                 <div>
                     <strong class="text-teal-500 text-xl">🔑 키를 찾아라!</strong>
                     <p class="mt-2">
-                        <strong>목표</strong>: 암호문과 원래의 단어를 보고 둘을 연결하는 비밀 '키'를 찾는 게임!
+                        **목표:** 암호문과 원래 단어를 보고 둘을 연결하는 비밀 '키'를 찾는 게임!
                     </p>
                     <ul class="list-disc list-inside mt-2 space-y-1">
                         <li><strong class="font-mono bg-red-200 px-1 rounded">암호문</strong>과 <strong
-                                class="font-mono bg-green-200 px-1 rounded">원래의 단어</strong>가 동시에 나옵니다.</li>
+                                class="font-mono bg-green-200 px-1 rounded">원래 단어</strong>가 동시에 나옵니다.</li>
                         <li><strong class="font-mono bg-gray-200 px-1 rounded">+</strong> / <strong
                                 class="font-mono bg-gray-200 px-1 rounded">-</strong> 버튼으로 암호판을 돌려, 두 단어가 딱 맞도록 조준하세요.
                         </li>
@@ -375,7 +381,7 @@
         const wordList = ["BALL", "BOOK", "CAKE", "DESK", "DOLL", "FISH", "FROG", "GIFT", "HAND", "KING", "LAMP", "LION", "MILK", "MOON", "PARK", "PLAY", "STAR", "TREE", "APPLE", "BREAD", "CHAIR", "CLOUD", "DREAM", "EARTH", "GREEN", "HAPPY", "HEART", "JUICE", "MOUSE", "MUSIC", "PIZZA", "SMILE", "SPOON", "TIGER", "WATER", "WORLD", "BANANA", "BUTTER", "CANDLE", "FAMILY", "FLOWER", "FRIEND", "KITTEN", "ORANGE", "PENCIL", "PURPLE", "SCHOOL", "SUMMER", "WINDOW", "YELLOW"];
         const profanityList = ["씨발", "시발", "새끼", "좆", "씹", "개", "지랄", "염병", "썅", "병신", "븅신", "쪼다", "찌질이", "허접", "좆밥", "좆까", "존나", "좆도", "아가리", "개새끼", "씨발새끼", "씹새끼", "호로새끼", "미친새끼", "개년", "썅년", "씨발년", "미친년", "개놈", "쌍놈", "씨발놈", "미친놈", "개자식", "양아치", "쓰레기", "걸레", "애미", "애비", "니애미", "니애비"];
         let score = 0;
-        let timeLeft = 150;
+        let timeLeft = 90;
         let gameMode = '';
         let timerInterval = null;
         let isGameActive = false;
@@ -432,10 +438,23 @@
             }).join('');
         }
 
+        function goToMainMenu() {
+            gameScreen.classList.add('hidden');
+            hideModal(gameOverModal);
+            hideModal(leaderboardModal);
+            hideModal(tutorialModal);
+            modeSelectionScreen.classList.remove('hidden');
+
+            if (isGameActive) {
+                isGameActive = false;
+                clearInterval(timerInterval);
+            }
+        }
+
         function startGame(mode) {
             gameMode = mode;
             score = 0;
-            timeLeft = 150;
+            timeLeft = 90;
             isGameActive = true;
 
             scoreEl.textContent = score;
@@ -498,13 +517,6 @@
                 nameInput.disabled = false;
             }
             showModal(gameOverModal);
-        }
-
-        function playAgain() {
-            hideModal(gameOverModal);
-            hideModal(leaderboardModal);
-            modeSelectionScreen.classList.remove('hidden');
-            gameScreen.classList.add('hidden');
         }
 
         function nextQuestion_TimeAttack() {
@@ -664,10 +676,30 @@
             });
         }
 
-        document.getElementById('start-time-attack').addEventListener('click', () => startGame('time-attack'));
-        document.getElementById('start-find-key').addEventListener('click', () => startGame('find-key'));
-        document.getElementById('play-again').addEventListener('click', playAgain);
+        // History API integration
+        window.onpopstate = function (event) {
+            goToMainMenu();
+        };
+
+        if (location.hash) {
+            history.replaceState(null, '', window.location.pathname);
+        }
+
+        document.getElementById('start-time-attack').addEventListener('click', () => {
+            history.pushState({ view: 'game' }, '', '#game');
+            startGame('time-attack');
+        });
+        document.getElementById('start-find-key').addEventListener('click', () => {
+            history.pushState({ view: 'game' }, '', '#game');
+            startGame('find-key');
+        });
+
+        document.getElementById('play-again').addEventListener('click', () => {
+            history.back();
+        });
+
         answerInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') checkAnswer_TimeAttack(); });
+
         decreaseShiftBtn.addEventListener('click', () => {
             userShift = (userShift - 1 + 26) % 26;
             cumulativeAngle += anglePerShift;
@@ -678,14 +710,31 @@
             cumulativeAngle -= anglePerShift;
             updateShiftUI();
         });
+
         checkKeyBtn.addEventListener('click', checkAnswer_FindKey);
         submitAnswerBtn.addEventListener('click', checkAnswer_TimeAttack);
         document.getElementById('submit-score').addEventListener('click', submitScore);
         document.getElementById('share-score').addEventListener('click', shareScore);
-        document.getElementById('show-leaderboard').addEventListener('click', fetchAndShowLeaderboard);
-        document.getElementById('close-leaderboard').addEventListener('click', () => hideModal(leaderboardModal));
-        document.getElementById('show-tutorial').addEventListener('click', () => showModal(tutorialModal));
-        document.getElementById('close-tutorial').addEventListener('click', () => hideModal(tutorialModal));
+
+        // From Game Over Modal
+        document.getElementById('show-leaderboard').addEventListener('click', () => {
+            fetchAndShowLeaderboard();
+            history.pushState({ view: 'leaderboard' }, '', '#leaderboard');
+        });
+
+        // From Main Menu
+        document.getElementById('show-leaderboard-main').addEventListener('click', () => {
+            fetchAndShowLeaderboard();
+            history.pushState({ view: 'leaderboard' }, '', '#leaderboard');
+        });
+
+        document.getElementById('close-leaderboard').addEventListener('click', () => history.back());
+
+        document.getElementById('show-tutorial').addEventListener('click', () => {
+            showModal(tutorialModal);
+            history.pushState({ view: 'tutorial' }, '', '#tutorial');
+        });
+        document.getElementById('close-tutorial').addEventListener('click', () => history.back());
 
         createCipherWheel();
     </script>
