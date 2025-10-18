@@ -240,8 +240,8 @@
                 <p id="instruction" class="text-gray-500 mb-2"></p>
                 <p id="problem-key-display" class="key-display text-lg mb-4 inline-block hidden">Key: +3</p>
                 <div class="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-2">
-                    <p id="encrypted-word"
-                        class="text-3xl sm:text-4xl font-bold tracking-widest bg-gray-100 p-3 sm:p-4 rounded-lg"></p>
+                    <div id="encrypted-word"
+                        class="text-3xl sm:text-4xl font-bold tracking-widest bg-gray-100 p-3 sm:p-4 rounded-lg flex space-x-1"></div>
                     <div id="arrow-display" class="hidden">
                         <svg class="w-8 h-8 text-gray-500 transform rotate-90 sm:rotate-0" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
@@ -451,8 +451,11 @@
         }
 
         function updateShiftUI() {
-            userShiftDisplayEl.textContent = `이동 값: +${userShift}`;
+            userShiftDisplayEl.textContent = `현재 추측 키: +${userShift}`; // 제안 1도 함께 적용
             updateCipherWheel();
+            if (gameMode === 'find-key') {
+                updateVisualFeedback();
+            }
         }
 
         function caesarCipher(str, shift) {
@@ -623,7 +626,10 @@
             currentShift = Math.floor(Math.random() * 25) + 1;
             const encrypted = caesarCipher(currentWord, currentShift);
 
-            encryptedWordEl.textContent = encrypted;
+            // Time Attack 모드에서는 그냥 텍스트로 표시
+            encryptedWordEl.innerHTML = encrypted;
+            encryptedWordEl.dataset.original = encrypted; // 이 부분은 Find Key 모드와의 일관성을 위함
+            
             problemKeyDisplay.textContent = `키: +${currentShift}`;
             answerInput.value = '';
             answerInput.focus();
@@ -649,6 +655,27 @@
             }
         }
 
+        // 시각적 피드백을 업데이트하는 새로운 함수 추가
+        function updateVisualFeedback() {
+            if (!isGameActive || gameMode !== 'find-key') return; // Find Key 모드에서만 동작
+
+            const encryptedText = encryptedWordEl.dataset.original; // 원본 암호문
+            // userShift는 +1~+25 키
+            // 카이사르 암호 해독은 shift만큼 뒤로 미는 것이므로 (26 - userShift) % 26
+            const decryptedGuess = caesarCipher(encryptedText, (26 - userShift) % 26);
+            const letterSpans = encryptedWordEl.querySelectorAll('span');
+
+            for (let i = 0; i < letterSpans.length; i++) {
+                if (i < currentWord.length && decryptedGuess[i] === currentWord[i]) {
+                    letterSpans[i].classList.add('text-green-500');
+                    letterSpans[i].classList.remove('text-gray-800'); // 기존 텍스트 색 제거
+                } else {
+                    letterSpans[i].classList.remove('text-green-500');
+                    letterSpans[i].classList.add('text-gray-800'); // 기본 텍스트 색 적용
+                }
+            }
+        }
+
         function nextQuestion_FindKey() {
             cumulativeAngle = Math.round(cumulativeAngle / 360) * 360;
             userShift = 0;
@@ -657,8 +684,18 @@
             currentShift = Math.floor(Math.random() * 25) + 1;
             const encrypted = caesarCipher(currentWord, currentShift);
 
-            encryptedWordEl.textContent = encrypted;
+            // 암호문을 각 글자별 span으로 분리하여 표시
+            encryptedWordEl.innerHTML = '';
+            encryptedWordEl.dataset.original = encrypted; // 원본 암호문 저장
+            encrypted.split('').forEach(char => {
+                const span = document.createElement('span');
+                span.textContent = char;
+                span.className = 'transition-colors duration-200 text-gray-800'; // 기본 텍스트 색
+                encryptedWordEl.appendChild(span);
+            });
+
             originalWordDisplay.textContent = currentWord;
+            updateVisualFeedback(); // 첫 문제 표시 시에도 피드백 업데이트
         }
 
         function checkAnswer_FindKey() {
