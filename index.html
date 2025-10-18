@@ -466,9 +466,10 @@
         }
         
         function calculatePoints() {
-            const basePoints = 1;
-            const bonusPoints = Math.floor(combo / 5);
-            return basePoints + bonusPoints;
+            if (combo >= 15) return 7;
+            if (combo >= 10) return 5;
+            if (combo >= 5) return 3;
+            return 1;
         }
 
         function updateComboDisplay() {
@@ -510,18 +511,18 @@
                 return;
             }
 
-            let target = null;
-            for (let i = leaderboardData.length - 1; i >= 0; i--) {
-                const entry = leaderboardData[i];
+            let nextTarget = null;
+            for (const entry of leaderboardData) {
                 if (entry.score > score) {
-                    target = entry;
+                    nextTarget = entry;
+                } else {
                     break;
                 }
             }
 
-            if (target) {
-                const pointsNeeded = target.score - score + 1;
-                messageEl.textContent = `💪 ${pointsNeeded}점만 더! '${target.name}'님을 이길 수 있어요!`;
+            if (nextTarget) {
+                const pointsNeeded = nextTarget.score - score + 1;
+                messageEl.textContent = `💪 ${pointsNeeded}점만 더! '${nextTarget.name}'님을 이길 수 있어요!`;
             } else {
                 messageEl.textContent = '🏆 당신이 1위입니다! 새로운 기록을 세워보세요!';
             }
