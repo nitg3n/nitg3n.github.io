@@ -458,21 +458,8 @@
             
             if (!isGameActive) return;
 
-            if (gameMode === 'find-key') {
-                if (userShift === currentShift) {
-                    checkKeyBtn.disabled = false;
-                    checkKeyBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                    actionGuidanceMessageEl.textContent = '✅ 정답! 버튼을 눌러주세요!';
-                    actionGuidanceMessageEl.classList.add('text-green-500');
-                    actionGuidanceMessageEl.classList.remove('text-gray-500');
-                } else {
-                    checkKeyBtn.disabled = true;
-                    checkKeyBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                    actionGuidanceMessageEl.textContent = '휠을 돌려 키를 먼저 맞추세요!';
-                    actionGuidanceMessageEl.classList.remove('text-green-500');
-                    actionGuidanceMessageEl.classList.add('text-gray-500');
-                }
-            } else if (gameMode === 'time-attack') {
+            // '타임어택' 모드에서만 키 일치 여부를 확인하여 입력창을 제어
+            if (gameMode === 'time-attack') {
                  if (userShift === currentShift) {
                     answerInput.disabled = false;
                     answerInput.placeholder = '정답 입력';
@@ -557,7 +544,7 @@
 
             if (nextTarget) {
                 const pointsNeeded = nextTarget.score - score + 1;
-                messageEl.textContent = `💪 ${pointsNeeded}점만 더! '${nextTarget.name}'님을 이길 수 있어요!`;
+                messageEl.textContent = `🔥 ${pointsNeeded}점만 더! '${nextTarget.name}'님을 이길 수 있어요!`;
             } else {
                 messageEl.textContent = '🏆 당신이 1위입니다! 새로운 기록을 세워보세요!';
             }
@@ -602,11 +589,14 @@
             answerInput.style.display = (mode === 'time-attack') ? 'block' : 'none';
             submitAnswerBtn.style.display = (mode === 'time-attack') ? 'block' : 'none';
             checkKeyBtn.style.display = (mode === 'find-key') ? 'block' : 'none';
-            actionGuidanceMessageEl.classList.remove('hidden');
 
             problemKeyDisplay.style.display = (mode === 'time-attack') ? 'inline-block' : 'none';
             originalWordDisplay.style.display = (mode === 'find-key') ? 'block' : 'none';
             arrowDisplay.style.display = (mode === 'find-key') ? 'block' : 'none';
+            
+            actionGuidanceMessageEl.textContent = ''; // 안내 메시지 초기화
+            actionGuidanceMessageEl.classList.remove('hidden');
+
 
             if (mode === 'time-attack') {
                 document.getElementById('instruction').innerHTML = "주어진 <strong>키</strong>에 이동 값을 맞추고, 암호문을 해독하세요.";
@@ -691,11 +681,11 @@
             encryptedWordEl.textContent = encrypted;
             originalWordDisplay.textContent = currentWord;
 
-            updateShiftUI(); // UI를 잠금 상태로 초기화
+            updateShiftUI(); 
         }
 
         function checkAnswer_FindKey() {
-            if (!isGameActive || checkKeyBtn.disabled) return;
+            if (!isGameActive) return;
             const isCorrect = userShift === currentShift;
             if (isCorrect) {
                 combo++;
@@ -706,6 +696,11 @@
                 problemArea.classList.add('feedback-correct');
                 setTimeout(() => problemArea.classList.remove('feedback-correct'), 500);
                 nextQuestion_FindKey();
+            } else {
+                combo = 0;
+                updateComboDisplay();
+                problemArea.classList.add('feedback-incorrect');
+                setTimeout(() => problemArea.classList.remove('feedback-incorrect'), 500);
             }
         }
 
