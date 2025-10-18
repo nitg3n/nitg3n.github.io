@@ -169,6 +169,16 @@
                 transform: translateX(5px);
             }
         }
+        
+        @keyframes combo-pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15) rotate(-5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .combo-pop-animation {
+            animation: combo-pop 0.3s ease-out;
+        }
     </style>
 </head>
 
@@ -209,6 +219,10 @@
 
             <div id="motivation-area" class="min-h-[24px] mb-4">
                 <p id="motivational-message" class="text-sm text-center text-teal-600 font-medium"></p>
+            </div>
+
+            <div id="combo-area" class="min-h-[36px] mb-2">
+                <p id="combo-display" class="text-2xl font-bold text-red-500 hidden"></p>
             </div>
 
             <div class="cipher-wheel-container mx-auto mb-4">
@@ -402,6 +416,7 @@
         let cumulativeAngle = 0;
         const anglePerShift = 360 / 26;
         let leaderboardData = [];
+        let combo = 0;
 
         function createCipherWheel() {
             const outerWheel = document.querySelector('.outer-wheel');
@@ -450,19 +465,38 @@
             }).join('');
         }
         
+        function calculatePoints() {
+            const basePoints = 1;
+            const bonusPoints = Math.floor(combo / 5);
+            return basePoints + bonusPoints;
+        }
+
+        function updateComboDisplay() {
+            const comboEl = document.getElementById('combo-display');
+            if (combo >= 2) {
+                comboEl.textContent = `🔥 ${combo} COMBO!`;
+                comboEl.classList.remove('hidden');
+                comboEl.classList.add('combo-pop-animation');
+                setTimeout(() => {
+                    comboEl.classList.remove('combo-pop-animation');
+                }, 300);
+            } else {
+                comboEl.classList.add('hidden');
+            }
+        }
+
         async function fetchLeaderboardForMotivation(mode) {
             if (!db) {
                 leaderboardData = [];
                 return;
             }
-
             try {
                 const collectionPath = `leaderboard-${mode}`;
                 const scores = [];
                 const q = query(collection(db, collectionPath), orderBy("score", "desc"), limit(10));
                 const querySnapshot = await getDocs(q);
                 querySnapshot.forEach(doc => scores.push(doc.data()));
-                leaderboardData = scores.sort((a, b) => b.score - a.score); // 확실하게 정렬
+                leaderboardData = scores;
             } catch (e) {
                 console.error("동기부여 리더보드 로딩 실패:", e);
                 leaderboardData = [];
@@ -477,20 +511,18 @@
             }
 
             let target = null;
-            // 내 점수보다 높은 다음 목표를 찾기 (점수가 높은 순 -> 낮은 순으로 순회)
             for (let i = leaderboardData.length - 1; i >= 0; i--) {
                 const entry = leaderboardData[i];
                 if (entry.score > score) {
                     target = entry;
-                    break; 
+                    break;
                 }
             }
 
             if (target) {
                 const pointsNeeded = target.score - score + 1;
-                messageEl.textContent = `🔥 ${pointsNeeded}점만 더! '${target.name}'님을 이길 수 있어요!`;
+                messageEl.textContent = `💪 ${pointsNeeded}점만 더! '${target.name}'님을 이길 수 있어요!`;
             } else {
-                // 내가 1등이거나 리더보드에 있는 모든 사람보다 점수가 높을 때
                 messageEl.textContent = '🏆 당신이 1위입니다! 새로운 기록을 세워보세요!';
             }
         }
@@ -513,6 +545,8 @@
             score = 0;
             timeLeft = 90;
             isGameActive = true;
+            combo = 0;
+            updateComboDisplay();
 
             scoreEl.textContent = score;
             timerEl.textContent = timeLeft;
@@ -598,13 +632,17 @@
             if (!isGameActive) return;
             const isCorrect = answerInput.value.toUpperCase() === currentWord;
             if (isCorrect) {
-                score++;
+                combo++;
+                score += calculatePoints();
                 scoreEl.textContent = score;
                 updateMotivationalMessage();
+                updateComboDisplay();
                 problemArea.classList.add('feedback-correct');
                 setTimeout(() => problemArea.classList.remove('feedback-correct'), 500);
                 nextQuestion_TimeAttack();
             } else {
+                combo = 0;
+                updateComboDisplay();
                 problemArea.classList.add('feedback-incorrect');
                 setTimeout(() => problemArea.classList.remove('feedback-incorrect'), 500);
             }
@@ -626,13 +664,17 @@
             if (!isGameActive) return;
             const isCorrect = userShift === currentShift;
             if (isCorrect) {
-                score++;
+                combo++;
+                score += calculatePoints();
                 scoreEl.textContent = score;
                 updateMotivationalMessage();
+                updateComboDisplay();
                 problemArea.classList.add('feedback-correct');
                 setTimeout(() => problemArea.classList.remove('feedback-correct'), 500);
                 nextQuestion_FindKey();
             } else {
+                combo = 0;
+                updateComboDisplay();
                 problemArea.classList.add('feedback-incorrect');
                 setTimeout(() => problemArea.classList.remove('feedback-incorrect'), 500);
             }
