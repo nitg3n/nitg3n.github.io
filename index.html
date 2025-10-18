@@ -232,7 +232,7 @@
 
             <div id="shift-control" class="flex items-center justify-center space-x-4 mb-6">
                 <button id="decrease-shift" class="btn-control">-</button>
-                <span id="user-shift-display" class="key-display text-lg">이동 값: +0</span>
+                <span id="user-shift-display" class="key-display text-lg">현재 추측 키: +0</span>
                 <button id="increase-shift" class="btn-control">+</button>
             </div>
 
@@ -240,8 +240,8 @@
                 <p id="instruction" class="text-gray-500 mb-2"></p>
                 <p id="problem-key-display" class="key-display text-lg mb-4 inline-block hidden">Key: +3</p>
                 <div class="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-2">
-                    <div id="encrypted-word"
-                        class="text-3xl sm:text-4xl font-bold tracking-widest bg-gray-100 p-3 sm:p-4 rounded-lg flex space-x-1"></div>
+                    <p id="encrypted-word"
+                        class="text-3xl sm:text-4xl font-bold tracking-widest bg-gray-100 p-3 sm:p-4 rounded-lg"></p>
                     <div id="arrow-display" class="hidden">
                         <svg class="w-8 h-8 text-gray-500 transform rotate-90 sm:rotate-0" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
@@ -265,7 +265,8 @@
                 <button id="check-key-btn"
                     class="w-full mt-4 px-6 py-3 rounded-full font-bold text-lg text-gray-800 border-2 border-gray-800 hover:bg-gray-800 hover:text-white transition-all duration-300 transform active:scale-95 hidden">이
                     키로 확인</button>
-            </div>
+                <p id="key-match-message" class="text-sm mt-2 text-gray-500 h-5"></p>
+                </div>
         </div>
     </main>
 
@@ -401,6 +402,7 @@
         const checkKeyBtn = document.getElementById('check-key-btn');
         const arrowDisplay = document.getElementById('arrow-display');
         const submitAnswerBtn = document.getElementById('submit-answer-btn');
+        const keyMatchMessageEl = document.getElementById('key-match-message'); // 새로 추가된 메시지 요소
 
         const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         const wordList = ["BALL", "BOOK", "CAKE", "DESK", "DOLL", "FISH", "FROG", "GIFT", "HAND", "KING", "LAMP", "LION", "MILK", "MOON", "PARK", "PLAY", "STAR", "TREE", "APPLE", "BREAD", "CHAIR", "CLOUD", "DREAM", "EARTH", "GREEN", "HAPPY", "HEART", "JUICE", "MOUSE", "MUSIC", "PIZZA", "SMILE", "SPOON", "TIGER", "WATER", "WORLD", "BANANA", "BUTTER", "CANDLE", "FAMILY", "FLOWER", "FRIEND", "KITTEN", "ORANGE", "PENCIL", "PURPLE", "SCHOOL", "SUMMER", "WINDOW", "YELLOW"];
@@ -451,10 +453,24 @@
         }
 
         function updateShiftUI() {
-            userShiftDisplayEl.textContent = `현재 추측 키: +${userShift}`; // 제안 1도 함께 적용
+            userShiftDisplayEl.textContent = `현재 추측 키: +${userShift}`;
             updateCipherWheel();
+            
+            // '키 찾기' 모드일 때만 키 일치 여부를 확인하고 UI 업데이트
             if (gameMode === 'find-key') {
-                updateVisualFeedback();
+                if (userShift === currentShift) {
+                    checkKeyBtn.disabled = false;
+                    checkKeyBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    keyMatchMessageEl.textContent = '✅ 정답! 버튼을 눌러주세요!';
+                    keyMatchMessageEl.classList.add('text-green-500');
+                    keyMatchMessageEl.classList.remove('text-gray-500');
+                } else {
+                    checkKeyBtn.disabled = true;
+                    checkKeyBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    keyMatchMessageEl.textContent = '휠을 돌려 키를 먼저 맞추세요!';
+                    keyMatchMessageEl.classList.remove('text-green-500');
+                    keyMatchMessageEl.classList.add('text-gray-500');
+                }
             }
         }
 
@@ -525,7 +541,7 @@
 
             if (nextTarget) {
                 const pointsNeeded = nextTarget.score - score + 1;
-                messageEl.textContent = `💪 ${pointsNeeded}점만 더! '${nextTarget.name}'님을 이길 수 있어요!`;
+                messageEl.textContent = `🔥 ${pointsNeeded}점만 더! '${nextTarget.name}'님을 이길 수 있어요!`;
             } else {
                 messageEl.textContent = '🏆 당신이 1위입니다! 새로운 기록을 세워보세요!';
             }
@@ -561,7 +577,7 @@
 
             cumulativeAngle = 0;
             userShift = 0;
-            updateShiftUI();
+            // updateShiftUI는 각 nextQuestion 함수에서 호출되므로 여기서 호출 불필요
 
             modeSelectionScreen.classList.add('hidden');
             gameScreen.classList.remove('hidden');
@@ -571,6 +587,7 @@
                 answerInput.style.display = 'block';
                 submitAnswerBtn.classList.remove('hidden');
                 checkKeyBtn.classList.add('hidden');
+                keyMatchMessageEl.classList.add('hidden'); // '키 찾기' 모드 전용 메시지 숨기기
                 problemKeyDisplay.classList.remove('hidden');
                 originalWordDisplay.classList.add('hidden');
                 arrowDisplay.classList.add('hidden');
@@ -580,6 +597,7 @@
                 answerInput.style.display = 'none';
                 submitAnswerBtn.classList.add('hidden');
                 checkKeyBtn.classList.remove('hidden');
+                keyMatchMessageEl.classList.remove('hidden'); // '키 찾기' 모드 전용 메시지 보이기
                 problemKeyDisplay.classList.add('hidden');
                 originalWordDisplay.classList.remove('hidden');
                 arrowDisplay.classList.remove('hidden');
@@ -626,9 +644,7 @@
             currentShift = Math.floor(Math.random() * 25) + 1;
             const encrypted = caesarCipher(currentWord, currentShift);
 
-            // Time Attack 모드에서는 그냥 텍스트로 표시
-            encryptedWordEl.innerHTML = encrypted;
-            encryptedWordEl.dataset.original = encrypted; // 이 부분은 Find Key 모드와의 일관성을 위함
+            encryptedWordEl.textContent = encrypted;
             
             problemKeyDisplay.textContent = `키: +${currentShift}`;
             answerInput.value = '';
@@ -655,51 +671,23 @@
             }
         }
 
-        // 시각적 피드백을 업데이트하는 새로운 함수 추가
-        function updateVisualFeedback() {
-            if (!isGameActive || gameMode !== 'find-key') return; // Find Key 모드에서만 동작
-
-            const encryptedText = encryptedWordEl.dataset.original; // 원본 암호문
-            // userShift는 +1~+25 키
-            // 카이사르 암호 해독은 shift만큼 뒤로 미는 것이므로 (26 - userShift) % 26
-            const decryptedGuess = caesarCipher(encryptedText, (26 - userShift) % 26);
-            const letterSpans = encryptedWordEl.querySelectorAll('span');
-
-            for (let i = 0; i < letterSpans.length; i++) {
-                if (i < currentWord.length && decryptedGuess[i] === currentWord[i]) {
-                    letterSpans[i].classList.add('text-green-500');
-                    letterSpans[i].classList.remove('text-gray-800'); // 기존 텍스트 색 제거
-                } else {
-                    letterSpans[i].classList.remove('text-green-500');
-                    letterSpans[i].classList.add('text-gray-800'); // 기본 텍스트 색 적용
-                }
-            }
-        }
-
         function nextQuestion_FindKey() {
             cumulativeAngle = Math.round(cumulativeAngle / 360) * 360;
             userShift = 0;
-            updateShiftUI();
             currentWord = wordList[Math.floor(Math.random() * wordList.length)];
             currentShift = Math.floor(Math.random() * 25) + 1;
             const encrypted = caesarCipher(currentWord, currentShift);
 
-            // 암호문을 각 글자별 span으로 분리하여 표시
-            encryptedWordEl.innerHTML = '';
-            encryptedWordEl.dataset.original = encrypted; // 원본 암호문 저장
-            encrypted.split('').forEach(char => {
-                const span = document.createElement('span');
-                span.textContent = char;
-                span.className = 'transition-colors duration-200 text-gray-800'; // 기본 텍스트 색
-                encryptedWordEl.appendChild(span);
-            });
-
+            encryptedWordEl.textContent = encrypted;
             originalWordDisplay.textContent = currentWord;
-            updateVisualFeedback(); // 첫 문제 표시 시에도 피드백 업데이트
+
+            // 새 문제가 시작되면 버튼을 다시 비활성화하고 메시지를 초기화
+            updateShiftUI(); 
         }
 
         function checkAnswer_FindKey() {
             if (!isGameActive) return;
+            // 버튼이 활성화된 상태에서만 클릭 가능하므로, isCorrect는 항상 true
             const isCorrect = userShift === currentShift;
             if (isCorrect) {
                 combo++;
@@ -710,12 +698,8 @@
                 problemArea.classList.add('feedback-correct');
                 setTimeout(() => problemArea.classList.remove('feedback-correct'), 500);
                 nextQuestion_FindKey();
-            } else {
-                combo = 0;
-                updateComboDisplay();
-                problemArea.classList.add('feedback-incorrect');
-                setTimeout(() => problemArea.classList.remove('feedback-incorrect'), 500);
             }
+            // else 문은 사실상 도달 불가능
         }
 
         function showModal(modal) {
