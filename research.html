@@ -16,13 +16,16 @@
     <header class="top">
       <div class="top-inner">
         <a class="wordmark" href="index.html">Jaeha Han</a>
-        <a class="top-link" href="deck.html">Investor Deck</a>
+        <nav class="top-nav" aria-label="Site">
+          <a class="top-link" href="research.html">Research</a>
+          <span class="sep" aria-hidden="true">·</span>
+          <a class="top-link" href="deck.html">Investor Deck</a>
+        </nav>
       </div>
     </header>
 
-    <main>
+    <main class="wrap">
       <header class="hero">
-        <p class="eyebrow">Research program</p>
         <h1>Predictive Sparse Intelligence</h1>
         <p class="subtitle">
           A long-running research program exploring a simple question:
@@ -37,8 +40,7 @@
         </p>
       </blockquote>
 
-      <section>
-        <h2 class="section-head"><span>Lineage</span><span>00</span></h2>
+      <section aria-label="Lineage">
         <div class="block">
           <p>The project evolved through four generations:</p>
           <ol class="lineage">
@@ -129,27 +131,29 @@
             An MR-TPH implementation, <strong>Raptor</strong>, was evaluated on
             WikiText-2 under a specific experimental setup.
           </p>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th scope="col">Model</th>
-                <th scope="col" class="num">Test PPL</th>
-                <th scope="col" class="num">Epoch Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Transformer</td>
-                <td class="num">612.45</td>
-                <td class="num">~13.8s</td>
-              </tr>
-              <tr>
-                <td>Raptor / MR-TPH</td>
-                <td class="num">355.90</td>
-                <td class="num">~15.0s</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Model</th>
+                  <th scope="col" class="num">Test PPL</th>
+                  <th scope="col" class="num">Epoch Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Transformer</td>
+                  <td class="num">612.45</td>
+                  <td class="num">~13.8s</td>
+                </tr>
+                <tr>
+                  <td>Raptor / MR-TPH</td>
+                  <td class="num">355.90</td>
+                  <td class="num">~15.0s</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <p class="note">
             These results belong to that specific comparison and should not be
             interpreted as a general claim of superiority over Transformers.
@@ -209,24 +213,26 @@
             <li>32k evaluation context</li>
           </ul>
           <p>In a reported 32k Needle-in-a-Haystack test:</p>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th scope="col">Model</th>
-                <th scope="col" class="num">Success Rate</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Mamba-2</td>
-                <td class="num">83.3%</td>
-              </tr>
-              <tr>
-                <td>Spectrum-State v9</td>
-                <td class="num">100%</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Model</th>
+                  <th scope="col" class="num">Success Rate</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Mamba-2</td>
+                  <td class="num">83.3%</td>
+                </tr>
+                <tr>
+                  <td>Spectrum-State v9</td>
+                  <td class="num">100%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <p class="note">
             The test used <strong>N=30</strong> with the needle approximately
             <strong>29k tokens away</strong>.
@@ -302,37 +308,39 @@
       <section>
         <h2 class="section-head"><span>The Research Lineage</span><span>05</span></h2>
         <div class="block">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th scope="col">Generation</th>
-                <th scope="col">Main Question</th>
-                <th scope="col">Form of Sparsity</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>TPH</td>
-                <td>What should be stored?</td>
-                <td>Representation / State Sparsity</td>
-              </tr>
-              <tr>
-                <td>MR-TPH</td>
-                <td>What should be processed sequentially?</td>
-                <td>Temporal Sparsity</td>
-              </tr>
-              <tr>
-                <td>Spectrum-State</td>
-                <td>Which mechanisms and how much compute should be used?</td>
-                <td>Computational Sparsity</td>
-              </tr>
-              <tr>
-                <td>Imugi</td>
-                <td>What memory, capacity, precision, and hardware should be prepared?</td>
-                <td>Operational Sparsity</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Generation</th>
+                  <th scope="col">Main Question</th>
+                  <th scope="col">Form of Sparsity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>TPH</td>
+                  <td>What should be stored?</td>
+                  <td>Representation / State Sparsity</td>
+                </tr>
+                <tr>
+                  <td>MR-TPH</td>
+                  <td>What should be processed sequentially?</td>
+                  <td>Temporal Sparsity</td>
+                </tr>
+                <tr>
+                  <td>Spectrum-State</td>
+                  <td>Which mechanisms and how much compute should be used?</td>
+                  <td>Computational Sparsity</td>
+                </tr>
+                <tr>
+                  <td>Imugi</td>
+                  <td>What memory, capacity, precision, and hardware should be prepared?</td>
+                  <td>Operational Sparsity</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div class="block">
           <p>The broader conceptual evolution is:</p>
