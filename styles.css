@@ -112,10 +112,14 @@ summary:focus-visible {
 .wordmark {
   display: flex;
   align-items: center;
-  gap: 10px;
   font-size: 15px;
   font-weight: 750;
   letter-spacing: -0.4px;
+  white-space: nowrap;
+}
+
+.wordmark-sub {
+  white-space: nowrap;
 }
 
 a.wordmark {
@@ -125,16 +129,6 @@ a.wordmark {
 
 a.wordmark:hover {
   color: var(--green);
-}
-
-.brand-icon {
-  display: inline-grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  color: var(--ink);
-  font-size: 22px;
-  font-weight: 800;
 }
 
 .top-nav {
@@ -148,18 +142,6 @@ a.wordmark:hover {
   font-weight: 550;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-}
-
-.top-meta {
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 550;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-}
-
-.top-nav .top-meta {
-  margin-right: 18px;
 }
 
 /* Bottom bar mirrors the deck controls: same height, same padding. */
@@ -193,6 +175,11 @@ h1 {
   line-height: 1.03;
   letter-spacing: -4px;
   font-weight: 650;
+}
+
+h1,
+.slide h2 {
+  text-wrap: balance;
 }
 
 .eyebrow {
@@ -586,17 +573,6 @@ h3 {
 
 .slide.active {
   display: block;
-}
-
-.slide--dark {
-  background: var(--ink);
-  color: var(--paper);
-  --line: #405047;
-  --muted: #b4c1b8;
-}
-
-.slide--dark .quote {
-  border-color: var(--lime);
 }
 
 .slide .section-head {
@@ -1163,7 +1139,7 @@ details.disclosure p {
 
 .use .num {
   font-size: 13px;
-  color: var(--lime);
+  color: var(--green);
   margin-top: 7px;
   text-align: left;
 }
@@ -1380,6 +1356,10 @@ details.disclosure p {
 }
 
 @media (max-width: 480px) {
+  .wordmark-sub {
+    display: none;
+  }
+
   .wrap {
     padding: 40px 0 64px;
   }
@@ -1424,11 +1404,6 @@ details.disclosure p {
   .top-inner {
     height: 54px;
     padding: 0 20px;
-  }
-
-  .top-meta {
-    font-size: 9px;
-    letter-spacing: 0.07em;
   }
 
   .viewport {
