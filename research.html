@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fafaf7" />
+    <meta
+      name="description"
+      content="Predictive Sparse Intelligence: TPH to MR-TPH to Spectrum-State to Imugi. A research program on systems that predict what information, computation, memory, precision, and hardware will be necessary."
+    />
+    <link rel="canonical" href="https://nitg3n.xyz/research.html" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Predictive Sparse Intelligence | Jaeha Han</title>
+  </head>
+  <body>
+    <header class="top">
+      <div class="top-inner">
+        <a class="wordmark" href="index.html">Jaeha Han</a>
+        <a class="top-link" href="deck.html">Investor Deck</a>
+      </div>
+    </header>
+
+    <main>
+      <header class="hero">
+        <p class="eyebrow">Research program</p>
+        <h1>Predictive Sparse Intelligence</h1>
+        <p class="subtitle">
+          A long-running research program exploring a simple question:
+        </p>
+      </header>
+
+      <blockquote class="quote">
+        <p>
+          Can intelligence avoid storing every piece of information, processing
+          every token at the same depth, and activating every parameter all
+          the time?
+        </p>
+      </blockquote>
+
+      <section>
+        <h2 class="section-head"><span>Lineage</span><span>00</span></h2>
+        <div class="block">
+          <p>The project evolved through four generations:</p>
+          <ol class="lineage">
+            <li>TPH</li>
+            <li class="arrow" aria-hidden="true">→</li>
+            <li>MR-TPH</li>
+            <li class="arrow" aria-hidden="true">→</li>
+            <li>Spectrum-State</li>
+            <li class="arrow" aria-hidden="true">→</li>
+            <li>Imugi</li>
+          </ol>
+          <p class="scope">
+            State → Time → Compute → Memory / Capacity / Precision / Hardware
+          </p>
+        </div>
+        <div class="block">
+          <p>The central idea has remained the same:</p>
+          <blockquote class="quote">
+            <p>
+              <strong>Intelligence is not the ability to process everything.</strong><br />
+              <strong>It is the ability to predict what does not need to be processed.</strong>
+            </p>
+          </blockquote>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-head"><span>TPH</span><span>01</span></h2>
+        <div class="block">
+          <p>
+            <strong>TPH (Top-down Predictive Hierarchy)</strong> began with
+            predictive coding.
+          </p>
+          <p>
+            Instead of forwarding all information upward, higher layers predict
+            lower-layer states and only unexplained information — prediction
+            error — is propagated.
+          </p>
+          <p>
+            The project later found that filtering error alone was not enough.
+            The more important problem was what the model stored in its
+            internal state.
+          </p>
+          <p>This led to <strong>State Sparsity</strong>:</p>
+          <ul class="body-list">
+            <li>Predict first</li>
+            <li>Update from error</li>
+            <li>Store only important information</li>
+            <li>Keep higher-level representations sparse</li>
+            <li>Treat prediction as an information bottleneck</li>
+          </ul>
+        </div>
+        <div class="block">
+          <p>The core principle was:</p>
+          <blockquote class="quote">
+            <p><strong>If something is already predictable, do not process it again.</strong></p>
+          </blockquote>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-head"><span>MR-TPH</span><span>02</span></h2>
+        <div class="block">
+          <p>
+            TPH reduced unnecessary state updates, but its recurrent structure
+            remained difficult to parallelize efficiently on GPUs.
+          </p>
+          <p>
+            <strong>MR-TPH (Multi-Resolution TPH)</strong> extended sparsity
+            from state to time.
+          </p>
+          <p>Instead of processing an entire sequence sequentially at full resolution:</p>
+          <ul class="body-list">
+            <li>Fine-grained information is processed in parallel chunks</li>
+            <li>Each chunk produces a summary and boundary state</li>
+            <li>Only the lower-resolution summary sequence is processed sequentially</li>
+            <li>Prediction error still controls state updates</li>
+          </ul>
+        </div>
+        <div class="block">
+          <p>This created a new form of sparsity:</p>
+          <blockquote class="quote">
+            <p><strong>Not every moment needs the same temporal resolution.</strong></p>
+          </blockquote>
+        </div>
+        <div class="block">
+          <p>
+            An MR-TPH implementation, <strong>Raptor</strong>, was evaluated on
+            WikiText-2 under a specific experimental setup.
+          </p>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th scope="col">Model</th>
+                <th scope="col" class="num">Test PPL</th>
+                <th scope="col" class="num">Epoch Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Transformer</td>
+                <td class="num">612.45</td>
+                <td class="num">~13.8s</td>
+              </tr>
+              <tr>
+                <td>Raptor / MR-TPH</td>
+                <td class="num">355.90</td>
+                <td class="num">~15.0s</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="note">
+            These results belong to that specific comparison and should not be
+            interpreted as a general claim of superiority over Transformers.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-head"><span>Spectrum-State</span><span>03</span></h2>
+        <div class="block">
+          <p>
+            MR-TPH separated fine-grained and coarse-grained time processing.
+          </p>
+          <p>
+            <strong>Spectrum-State</strong> extended the same philosophy to
+            functions.
+          </p>
+          <p>
+            Instead of asking one mechanism to handle global context,
+            sequential state, exact recall, and reasoning equally well, the
+            architecture separated those roles.
+          </p>
+        </div>
+        <div class="block">
+          <h3>Early Spectrum-State</h3>
+          <p>The architecture evolved around several components:</p>
+          <ul class="body-list">
+            <li><strong>Eye</strong> — global or spectral context</li>
+            <li><strong>Hand</strong> — Mamba / SSM-based sequence processing</li>
+            <li><strong>Brain</strong> — global context control</li>
+            <li><strong>Shield</strong> — selective attention for exact recall</li>
+          </ul>
+          <p>A key development was <strong>GCS Sleep / Wake</strong>:</p>
+          <ul class="body-list">
+            <li>Reuse existing global context when it is sufficient</li>
+            <li>Recompute global perception only when uncertainty rises</li>
+          </ul>
+          <p>This extended the original idea from:</p>
+          <p class="scope">Sparse State → Sparse Compute</p>
+        </div>
+        <div class="block">
+          <h3>Spectrum-State v9</h3>
+          <p>
+            Spectrum-State v9 accepted that SSMs can lose exact long-range
+            details when compressing history into fixed-size state.
+          </p>
+          <p>
+            Instead of removing attention entirely, it used attention
+            selectively.
+          </p>
+          <p>The reported configuration included:</p>
+          <ul class="body-list">
+            <li>85M parameters</li>
+            <li>12 layers</li>
+            <li>9 Mamba layers</li>
+            <li>3 selective attention layers</li>
+            <li>32k evaluation context</li>
+          </ul>
+          <p>In a reported 32k Needle-in-a-Haystack test:</p>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th scope="col">Model</th>
+                <th scope="col" class="num">Success Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Mamba-2</td>
+                <td class="num">83.3%</td>
+              </tr>
+              <tr>
+                <td>Spectrum-State v9</td>
+                <td class="num">100%</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="note">
+            The test used <strong>N=30</strong> with the needle approximately
+            <strong>29k tokens away</strong>.
+          </p>
+        </div>
+        <div class="block">
+          <h3>Spectrum-State v14.5–v15</h3>
+          <p>Later versions expanded selective computation further:</p>
+          <ul class="body-list">
+            <li>Adaptive perception</li>
+            <li>Sparse experts</li>
+            <li>Compressed memory</li>
+            <li>Dynamic reasoning depth</li>
+            <li>Critic / PRM-style verification</li>
+            <li>Fast and slow reasoning paths</li>
+          </ul>
+          <p>The question changed from:</p>
+          <blockquote class="quote">
+            <p>“When should the model update its state?”</p>
+          </blockquote>
+          <p>to:</p>
+          <blockquote class="quote">
+            <p><strong>“When should the model think harder?”</strong></p>
+          </blockquote>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-head"><span>Imugi</span><span>04</span></h2>
+        <div class="block">
+          <p>
+            <strong>Imugi</strong> extends the same research lineage from
+            architecture into system-level resource allocation.
+          </p>
+          <p>
+            The goal is no longer only to react when a difficult input appears.
+          </p>
+          <p>
+            The system attempts to predict what resources will be needed next.
+          </p>
+          <p>This includes:</p>
+          <ul class="body-list">
+            <li>Multi-timescale recurrent processing</li>
+            <li>Compressed associative memory</li>
+            <li>Persistent semantic memory</li>
+            <li>Generalist / Specialist routing</li>
+            <li>Critic-based foresight</li>
+            <li>Hybrid precision</li>
+            <li>Specialist prefetching</li>
+            <li>Hardware-aware execution</li>
+            <li>Long-context state carry</li>
+            <li>Distributed training</li>
+          </ul>
+        </div>
+        <div class="block">
+          <p>The key transition is:</p>
+          <p class="scope">Reactive Compute → Predictive Compute</p>
+          <p>
+            Instead of only allocating more computation after difficulty
+            appears, the system aims to anticipate future difficulty and
+            prepare:
+          </p>
+          <ul class="body-list">
+            <li>the right specialist,</li>
+            <li>the right memory,</li>
+            <li>the right precision,</li>
+            <li>the right compute path,</li>
+            <li>and even the right hardware resources.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-head"><span>The Research Lineage</span><span>05</span></h2>
+        <div class="block">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th scope="col">Generation</th>
+                <th scope="col">Main Question</th>
+                <th scope="col">Form of Sparsity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>TPH</td>
+                <td>What should be stored?</td>
+                <td>Representation / State Sparsity</td>
+              </tr>
+              <tr>
+                <td>MR-TPH</td>
+                <td>What should be processed sequentially?</td>
+                <td>Temporal Sparsity</td>
+              </tr>
+              <tr>
+                <td>Spectrum-State</td>
+                <td>Which mechanisms and how much compute should be used?</td>
+                <td>Computational Sparsity</td>
+              </tr>
+              <tr>
+                <td>Imugi</td>
+                <td>What memory, capacity, precision, and hardware should be prepared?</td>
+                <td>Operational Sparsity</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="block">
+          <p>The broader conceptual evolution is:</p>
+          <p class="scope">
+            Prediction → Error → Sparse State → Multi-Resolution → Global
+            Context → Exact Recall → Adaptive Compute → Sparse Capacity →
+            Persistent Memory → Foresight → Hardware-Aware Intelligence
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-head"><span>Experimental Work</span><span>06</span></h2>
+        <div class="block">
+          <p>
+            Parts of the research program have been implemented and evaluated.
+          </p>
+        </div>
+        <div class="block">
+          <h3>Spectrum-State v7</h3>
+          <p>Reported training experiment:</p>
+          <ul class="body-list">
+            <li>TinyStories</li>
+            <li>50,000 steps</li>
+            <li>Loss: 0.54</li>
+            <li>VRAM usage: 1.8 GB</li>
+          </ul>
+        </div>
+        <div class="block">
+          <h3>MR-TPH / Raptor</h3>
+          <p>Reported WikiText-2 comparison:</p>
+          <ul class="body-list">
+            <li>Raptor Test PPL: 355.90</li>
+            <li>Transformer Test PPL: 612.45</li>
+          </ul>
+        </div>
+        <div class="block">
+          <h3>Spectrum-State v9</h3>
+          <p>Reported long-context recall experiment:</p>
+          <ul class="body-list">
+            <li>85M parameters</li>
+            <li>32k context</li>
+            <li>N=30</li>
+            <li>~29k token retrieval distance</li>
+            <li>Spectrum-State: 100%</li>
+            <li>Mamba-2: 83.3%</li>
+          </ul>
+          <p class="note">
+            These results are specific to their respective experimental setups.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-head"><span>Current Research Status</span><span>07</span></h2>
+        <div class="block">
+          <p>
+            The earlier generations include implemented experiments and
+            quantitative evaluations.
+          </p>
+          <p>
+            Imugi currently represents a broader architectural and systems
+            specification, including:
+          </p>
+          <ul class="body-list">
+            <li>memory policy,</li>
+            <li>specialist routing,</li>
+            <li>foresight control,</li>
+            <li>hybrid precision,</li>
+            <li>training stability,</li>
+            <li>distributed execution,</li>
+            <li>and hardware orchestration.</li>
+          </ul>
+        </div>
+        <div class="block">
+          <p>Several components still require dedicated benchmarking, including:</p>
+          <ul class="body-list">
+            <li>long-context memory retention,</li>
+            <li>specialist routing efficiency,</li>
+            <li>foresight accuracy,</li>
+            <li>hardware prefetch gains,</li>
+            <li>low-precision stability,</li>
+            <li>and end-to-end Imugi performance.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-head"><span>Summary</span><span>08</span></h2>
+        <div class="block">
+          <blockquote class="quote">
+            <p>
+              <strong>Predictive Sparse Intelligence is a research program about
+              building systems that predict not only what comes next, but what
+              information, computation, memory, precision, and hardware
+              resources will actually be necessary to handle it.</strong>
+            </p>
+          </blockquote>
+        </div>
+      </section>
+
+      <footer class="site-foot">
+        <span>nitg3n.xyz</span>
+        <span>Project Default · Pre-seed</span>
+      </footer>
+    </main>
+  </body>
+</html>
