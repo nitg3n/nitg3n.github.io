@@ -1,11 +1,13 @@
-# Jaeha Han
+# nitg3n.xyz
 
-Personal research homepage for [nitg3n.github.io](https://nitg3n.github.io/).
+Personal site of Jaeha (Jay) Han — projects, research, and the Project
+Default investor deck.
 
-The site is intentionally dependency-free and can be hosted directly with
-GitHub Pages.
+- `index.html` — home
+- `research.html` — Predictive Sparse Intelligence
+- `deck.html` — Project Default investor deck
+- `styles.css` — one design system for all pages
+- `PretendardVariable.woff2`, `favicon.svg` — font, icon
 
-## Publish
-
-Create the `nitg3n/nitg3n.github.io` repository, commit these files to its
-`main` branch, and enable GitHub Pages from the repository root.
+Dependency-free. Served by GitHub Pages from `main`
+(`nitg3n/nitg3n.github.io`, custom domain `nitg3n.xyz`).
