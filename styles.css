@@ -1,7 +1,7 @@
 /* ==========================================================================
    One language.
-   A single design system for every page: tokens, type, chrome,
-   components, and slides. No page owns its own dialect.
+   A single design system for every page: tokens, type, shell, components,
+   diagrams, and slides. No page owns its own dialect.
    Exception: depicted product UI (chat mock, terminal mock, prompt
    bubble) keeps a few literal values because it portrays software,
    not the site. Everything editorial shares the tokens below.
@@ -27,12 +27,12 @@
   --lime: #e0e8d5;
   --white: #fff;
   --sand: #e5e7e0;
-  --sage: #c7cec0;
   --stone: #a9b7a7;
   --mist: #d1e4d6;
   --focus: #779e34;
   --radius-s: 6px;
   --radius-m: 10px;
+  --radius-full: 999px;
   --scale: 1; /* slide machinery, set by deck script */
 }
 
@@ -55,10 +55,6 @@ body {
   -webkit-font-smoothing: antialiased;
   font-size: 17px;
   line-height: 1.6;
-}
-
-body.deck-page {
-  background: var(--sand);
 }
 
 h1,
@@ -98,26 +94,19 @@ summary:focus-visible {
   background: var(--lime);
 }
 
-/* ---------- 3. Site chrome ---------- */
+/* ---------- 3. Shell: one header, one footer bar, every page ---------- */
 .top {
   border-bottom: 1px solid var(--line);
 }
 
 .top-inner {
-  width: min(100% - 40px, 680px);
-  margin: 0 auto;
+  margin: 0;
+  padding: 0 30px;
   height: 58px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-}
-
-.top-inner--wide {
-  width: auto;
-  max-width: none;
-  margin: 0;
-  padding: 0 30px;
 }
 
 .wordmark {
@@ -173,11 +162,26 @@ a.wordmark:hover {
   margin-right: 18px;
 }
 
-/* ---------- 4. Site type & layout ---------- */
+/* Bottom bar mirrors the deck controls: same height, same padding. */
+.site-foot {
+  margin: 0;
+  height: 68px;
+  padding: 0 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ---------- 4. Reading pages: type & layout ---------- */
 .wrap {
   width: min(100% - 40px, 680px);
   margin: 0 auto;
-  padding: 56px 0 80px;
+  padding: 56px 0 64px;
 }
 
 .hero {
@@ -185,9 +189,9 @@ a.wordmark:hover {
 }
 
 h1 {
-  font-size: clamp(40px, 7vw, 56px);
-  line-height: 1.05;
-  letter-spacing: -2.5px;
+  font-size: clamp(48px, 9vw, 96px);
+  line-height: 1.03;
+  letter-spacing: -4px;
   font-weight: 650;
 }
 
@@ -245,18 +249,6 @@ h3 {
   color: var(--muted);
 }
 
-.site-foot {
-  margin-top: 56px;
-  border-top: 1px solid var(--line);
-  padding-top: 16px;
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
 /* ---------- 5. Shared components ---------- */
 .sep {
   margin: 0 8px;
@@ -308,6 +300,16 @@ h3 {
   margin-top: 12px;
 }
 
+.block p + .gen-grid,
+.block p + .flow,
+.block p + .roles,
+.block p + .layers,
+.block ul + .flow,
+.block ul + .roles,
+.block ul + .layers {
+  margin-top: 20px;
+}
+
 .block > h3 {
   margin-bottom: 8px;
 }
@@ -338,24 +340,6 @@ h3 {
 
 .body-list li + li {
   margin-top: 4px;
-}
-
-.lineage {
-  margin: 20px 0 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 14px;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.4px;
-}
-
-.lineage .arrow {
-  color: var(--muted);
-  font-weight: 400;
 }
 
 .scope {
@@ -435,7 +419,136 @@ h3 {
   line-height: 1.55;
 }
 
-/* ---------- 6. Slides ---------- */
+/* ---------- 6. Diagrams: the same panel language as the deck ---------- */
+.gen-grid {
+  display: grid;
+  grid-template-columns: 1fr 32px 1fr 32px 1fr 32px 1fr;
+  gap: 12px;
+  align-items: stretch;
+  margin-top: 20px;
+}
+
+.gen-grid > .arrow {
+  align-self: center;
+}
+
+.gen {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--white);
+  padding: 18px;
+}
+
+.gen > * + * {
+  margin-top: 6px;
+}
+
+.gen-name {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.gen-s {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.flow {
+  display: grid;
+  grid-template-columns: 1fr 48px 1fr;
+  gap: 12px;
+  align-items: stretch;
+  margin-top: 20px;
+}
+
+.flow--stack {
+  grid-template-columns: 1fr;
+}
+
+.flow > .arrow {
+  align-self: center;
+}
+
+.flow-box {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--white);
+  padding: 20px 22px;
+}
+
+.flow-box > * + * {
+  margin-top: 8px;
+}
+
+.flow-box p {
+  font-size: 17px;
+}
+
+.flow > .chips {
+  align-content: center;
+}
+
+.roles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.role {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--white);
+  padding: 18px;
+}
+
+.role > * + * {
+  margin-top: 8px;
+}
+
+.role p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chips span {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  background: var(--white);
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.layers {
+  display: flex;
+  gap: 6px;
+  margin-top: 20px;
+}
+
+.layers span {
+  flex: 1;
+  height: 34px;
+  border-radius: var(--radius-s);
+}
+
+.layers .l-m {
+  background: var(--green);
+}
+
+.layers .l-a {
+  border: 1px solid var(--green);
+}
+
+/* ---------- 7. Slides ---------- */
 .viewport {
   height: calc(100dvh - 126px);
   display: flex;
@@ -464,6 +577,7 @@ h3 {
   width: 1440px;
   height: 810px;
   background: var(--paper);
+  outline: 1px solid var(--line);
   padding: 42px 68px 66px;
   position: relative;
   overflow: hidden;
@@ -1125,6 +1239,7 @@ details.disclosure p {
   justify-content: space-between;
   align-items: center;
   gap: 20px;
+  border-top: 1px solid var(--line);
 }
 
 .nav-left,
@@ -1135,7 +1250,7 @@ details.disclosure p {
 }
 
 .control {
-  border: 1px solid var(--sage);
+  border: 1px solid var(--line);
   background: transparent;
   color: var(--ink);
   min-height: 36px;
@@ -1191,7 +1306,7 @@ details.disclosure p {
   display: block;
   height: 3px;
   border-radius: 2px;
-  background: var(--sage);
+  background: var(--line);
 }
 
 .nav-dot[aria-current="step"]::before {
@@ -1251,13 +1366,13 @@ details.disclosure p {
   left: 0;
   right: 0;
   background: var(--sand);
-  border-top: 1px solid var(--sage);
+  border-top: 1px solid var(--line);
   z-index: 2;
 }
 
-/* ---------- 7. Responsive ---------- */
+/* ---------- 8. Responsive ---------- */
 @media (min-width: 1800px) {
-  .top-inner--wide,
+  .top-inner,
   .controls {
     padding-left: 48px;
     padding-right: 48px;
@@ -1278,21 +1393,36 @@ details.disclosure p {
     margin-top: 40px;
   }
 
+  .site-foot {
+    padding: 0 20px;
+  }
+
   .table-wrap .table {
     min-width: 520px;
+  }
+
+  .gen-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gen-grid > .arrow,
+  .flow > .arrow {
+    transform: rotate(90deg);
+    font-size: 24px;
+  }
+
+  .flow {
+    grid-template-columns: 1fr;
+  }
+
+  .roles {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media screen and (max-width: 1000px) {
-  body.deck-page {
-    background: var(--paper);
-  }
-
   .top-inner {
     height: 54px;
-  }
-
-  .top-inner--wide {
     padding: 0 20px;
   }
 
@@ -1627,7 +1757,7 @@ details.disclosure p {
     height: 68px;
     padding: 12px 18px;
     background: var(--sand);
-    border-top: 1px solid var(--sage);
+    border-top: 1px solid var(--line);
     z-index: 5;
   }
 
@@ -1664,7 +1794,7 @@ details.disclosure p {
   }
 }
 
-/* ---------- 8. Print ---------- */
+/* ---------- 9. Print ---------- */
 @page {
   size: 381mm 214.3125mm;
   margin: 0;

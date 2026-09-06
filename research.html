@@ -43,15 +43,27 @@
       <section aria-label="Lineage">
         <div class="block">
           <p>The project evolved through four generations:</p>
-          <ol class="lineage">
-            <li>TPH</li>
-            <li class="arrow" aria-hidden="true">→</li>
-            <li>MR-TPH</li>
-            <li class="arrow" aria-hidden="true">→</li>
-            <li>Spectrum-State</li>
-            <li class="arrow" aria-hidden="true">→</li>
-            <li>Imugi</li>
-          </ol>
+          <div class="gen-grid">
+            <div class="gen">
+              <p class="gen-name">TPH</p>
+              <p class="gen-s">State Sparsity</p>
+            </div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="gen">
+              <p class="gen-name">MR-TPH</p>
+              <p class="gen-s">Temporal Sparsity</p>
+            </div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="gen">
+              <p class="gen-name">Spectrum-State</p>
+              <p class="gen-s">Computational Sparsity</p>
+            </div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="gen">
+              <p class="gen-name">Imugi</p>
+              <p class="gen-s">Operational Sparsity</p>
+            </div>
+          </div>
           <p class="scope">
             State → Time → Compute → Memory / Capacity / Precision / Hardware
           </p>
@@ -94,6 +106,20 @@
           </ul>
         </div>
         <div class="block">
+          <div class="flow">
+            <div class="flow-box">
+              <p class="eyebrow">Higher layer</p>
+              <p>Predicts lower-layer states</p>
+            </div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="flow-box">
+              <p class="eyebrow">Lower layer</p>
+              <p>Propagates only prediction error</p>
+            </div>
+          </div>
+          <p class="note">Predict first. Propagate only the error.</p>
+        </div>
+        <div class="block">
           <p>The core principle was:</p>
           <blockquote class="quote">
             <p><strong>If something is already predictable, do not process it again.</strong></p>
@@ -119,6 +145,19 @@
             <li>Only the lower-resolution summary sequence is processed sequentially</li>
             <li>Prediction error still controls state updates</li>
           </ul>
+        </div>
+        <div class="block">
+          <div class="flow flow--stack">
+            <div class="flow-box">
+              <p class="eyebrow">Fine-grained · parallel</p>
+              <p>Each chunk produces a summary and boundary state</p>
+            </div>
+            <div class="arrow" aria-hidden="true">↓</div>
+            <div class="flow-box">
+              <p class="eyebrow">Coarse-grained · sequential</p>
+              <p>Only the summary sequence is processed sequentially</p>
+            </div>
+          </div>
         </div>
         <div class="block">
           <p>This created a new form of sparsity:</p>
@@ -180,17 +219,36 @@
         <div class="block">
           <h3>Early Spectrum-State</h3>
           <p>The architecture evolved around several components:</p>
-          <ul class="body-list">
-            <li><strong>Eye</strong> — global or spectral context</li>
-            <li><strong>Hand</strong> — Mamba / SSM-based sequence processing</li>
-            <li><strong>Brain</strong> — global context control</li>
-            <li><strong>Shield</strong> — selective attention for exact recall</li>
-          </ul>
+          <div class="roles">
+            <div class="role">
+              <p class="eyebrow">Eye</p>
+              <p>Global or spectral context</p>
+            </div>
+            <div class="role">
+              <p class="eyebrow">Hand</p>
+              <p>Mamba / SSM-based sequence processing</p>
+            </div>
+            <div class="role">
+              <p class="eyebrow">Brain</p>
+              <p>Global context control</p>
+            </div>
+            <div class="role">
+              <p class="eyebrow">Shield</p>
+              <p>Selective attention for exact recall</p>
+            </div>
+          </div>
           <p>A key development was <strong>GCS Sleep / Wake</strong>:</p>
-          <ul class="body-list">
-            <li>Reuse existing global context when it is sufficient</li>
-            <li>Recompute global perception only when uncertainty rises</li>
-          </ul>
+          <div class="flow">
+            <div class="flow-box">
+              <p class="eyebrow">Sleep</p>
+              <p>Reuse existing global context when it is sufficient</p>
+            </div>
+            <div class="arrow" aria-hidden="true">⇄</div>
+            <div class="flow-box">
+              <p class="eyebrow">Wake</p>
+              <p>Recompute global perception only when uncertainty rises</p>
+            </div>
+          </div>
           <p>This extended the original idea from:</p>
           <p class="scope">Sparse State → Sparse Compute</p>
         </div>
@@ -212,6 +270,17 @@
             <li>3 selective attention layers</li>
             <li>32k evaluation context</li>
           </ul>
+          <div
+            class="layers"
+            role="img"
+            aria-label="12 layers: 9 Mamba layers and 3 selective attention layers"
+          >
+            <span class="l-m"></span><span class="l-m"></span><span class="l-m"></span><span class="l-m"></span><span class="l-m"></span><span class="l-m"></span><span class="l-m"></span><span class="l-m"></span><span class="l-m"></span><span class="l-a"></span><span class="l-a"></span><span class="l-a"></span>
+          </div>
+          <p class="note">
+            9 Mamba layers carry sequential state; 3 selective attention
+            layers handle exact recall.
+          </p>
           <p>In a reported 32k Needle-in-a-Haystack test:</p>
           <div class="table-wrap">
             <table class="table">
@@ -295,13 +364,16 @@
             appears, the system aims to anticipate future difficulty and
             prepare:
           </p>
-          <ul class="body-list">
-            <li>the right specialist,</li>
-            <li>the right memory,</li>
-            <li>the right precision,</li>
-            <li>the right compute path,</li>
-            <li>and even the right hardware resources.</li>
-          </ul>
+          <div class="flow">
+            <div class="flow-box">
+              <p class="eyebrow">Prepare</p>
+              <p>The right resources for future difficulty — even hardware.</p>
+            </div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="chips">
+              <span>Specialist</span><span>Memory</span><span>Precision</span><span>Compute path</span><span>Hardware</span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -441,11 +513,11 @@
           </blockquote>
         </div>
       </section>
-
-      <footer class="site-foot">
-        <span>nitg3n.xyz</span>
-        <span>Project Default · Pre-seed</span>
-      </footer>
     </main>
+
+    <footer class="site-foot">
+      <span>nitg3n.xyz</span>
+      <span>Project Default · Pre-seed</span>
+    </footer>
   </body>
 </html>
