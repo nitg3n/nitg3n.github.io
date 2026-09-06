@@ -17,7 +17,7 @@
 <body>
   <header class="top">
     <div class="top-inner">
-      <a class="wordmark" href="index.html" title="Back to nitg3n.xyz">Jay Han<span class="wordmark-sub"> | Project Default</span></a>
+      <a class="wordmark" href="index.html" title="Back to nitg3n.xyz">Jay Han<span class="wordmark-sub" aria-hidden="true">|</span>Project Default</a>
       <nav class="top-nav" aria-label="Site">
         <a class="top-link" href="research.html">Research</a>
         <span class="sep" aria-hidden="true">·</span>
@@ -244,10 +244,12 @@
         document.getElementById('dots').append(dot);
         return dot;
       });
+      const isFull = () => !!document.fullscreenElement || document.body.classList.contains('theater');
       function fit() {
-        const width = Math.max(1, innerWidth - 48);
-        const height = Math.max(1, innerHeight - 150);
-        const scale = Math.min(width / 1440, height / 810, 1.4);
+        const full = isFull();
+        const width = Math.max(1, innerWidth - (full ? 0 : 48));
+        const height = Math.max(1, innerHeight - (full ? 0 : 150));
+        const scale = Math.min(width / 1440, height / 810, full ? 4 : 1.4);
         document.documentElement.style.setProperty('--scale', scale);
       }
       function show(index, updateHash = true) {
@@ -275,10 +277,18 @@
       }
       async function toggleFullscreen() {
         try {
-          if (document.fullscreenElement) await document.exitFullscreen();
-          else await document.documentElement.requestFullscreen();
+          if (document.body.classList.contains('theater') && !document.fullscreenElement) document.body.classList.remove('theater');
+          else if (document.fullscreenElement) await document.exitFullscreen();
+          else if (document.fullscreenEnabled) await document.documentElement.requestFullscreen();
+          else {
+            if (all) toggleOverview();
+            document.body.classList.add('theater');
+          }
         } catch {
-          document.getElementById('announcement').textContent = 'Fullscreen is unavailable in this browser.';
+          if (all) toggleOverview();
+          document.body.classList.add('theater');
+        } finally {
+          fit();
         }
       }
       prev.addEventListener('click', () => show(current - 1));
@@ -293,6 +303,8 @@
       document.addEventListener('keydown', event => {
         if (event.altKey || event.ctrlKey || event.metaKey || event.target.closest('input,textarea,select,summary,[contenteditable]')) return;
         if (event.target.closest('button,a') && !['ArrowRight','ArrowLeft','PageDown','PageUp','Home','End','Escape'].includes(event.key)) return;
+        if (event.key === 'Escape' && !document.fullscreenElement && document.body.classList.contains('theater')) { document.body.classList.remove('theater'); fit(); return; }
+        if (isFull() && event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
         if (['ArrowRight','PageDown',' '].includes(event.key)) { event.preventDefault(); show(current + 1); }
         else if (['ArrowLeft','PageUp'].includes(event.key)) { event.preventDefault(); show(current - 1); }
         else if (event.key === 'Home') { event.preventDefault(); show(0); }
@@ -303,7 +315,7 @@
       });
       let touch = null;
       document.querySelector('.viewport').addEventListener('touchstart', event => {
-        if (all || event.touches.length !== 1 || event.target.closest('button,a,summary')) { touch = null; return; }
+        if (isFull() || all || event.touches.length !== 1 || event.target.closest('button,a,summary')) { touch = null; return; }
         touch = { x:event.touches[0].clientX, y:event.touches[0].clientY };
       }, { passive:true });
       document.querySelector('.viewport').addEventListener('touchend', event => {
@@ -315,6 +327,7 @@
       }, { passive:true });
       document.querySelector('.viewport').addEventListener('touchcancel', () => { touch = null; }, { passive:true });
       window.addEventListener('resize', fit);
+      document.addEventListener('fullscreenchange', fit);
       window.addEventListener('hashchange', () => show(readHash(), false));
       fit();
       show(readHash());

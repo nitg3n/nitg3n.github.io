@@ -110,8 +110,6 @@ summary:focus-visible {
 }
 
 .wordmark {
-  display: flex;
-  align-items: center;
   font-size: 15px;
   font-weight: 750;
   letter-spacing: -0.4px;
@@ -119,6 +117,7 @@ summary:focus-visible {
 }
 
 .wordmark-sub {
+  margin: 0 12px;
   white-space: nowrap;
 }
 
@@ -1293,6 +1292,39 @@ details.disclosure p {
 .key-hint {
   font-size: 11px;
   color: var(--muted);
+}
+
+/* Fullscreen: the deck only. No chrome; arrow keys move. */
+:fullscreen .top,
+:fullscreen .controls {
+  display: none;
+}
+
+:fullscreen .viewport {
+  height: 100dvh;
+  padding: 0;
+}
+
+:-webkit-full-screen .top,
+:-webkit-full-screen .controls {
+  display: none;
+}
+
+:-webkit-full-screen .viewport {
+  height: 100dvh;
+  padding: 0;
+}
+
+/* Theater fallback: same deck-only view where native fullscreen
+   is unavailable or blocked. Toggled by script, not by browser. */
+body.theater .top,
+body.theater .controls {
+  display: none;
+}
+
+body.theater .viewport {
+  height: 100dvh;
+  padding: 0;
 }
 
 .sr-only {
