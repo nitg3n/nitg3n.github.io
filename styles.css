@@ -1868,3 +1868,126 @@ body.theater .viewport {
     display: none;
   }
 }
+
+/* Investor deck additions */
+.cover-layout{display:grid;grid-template-columns:1.35fr 1fr;gap:54px;align-items:center;margin-top:58px}
+.cover-layout h1{font-size:88px;letter-spacing:-4px}.raise-line{margin-top:36px;font-size:22px}.raise-line strong{color:var(--green);font-size:30px;margin-left:10px}
+.layer-diagram>.eyebrow{margin-bottom:18px}.layer-row{display:grid;grid-template-columns:75px 1fr;gap:7px 18px;font-size:19px;padding:19px 0;border-top:1px solid var(--line)}.layer-row>span{grid-row:span 3;font-size:14px;color:var(--muted)}.layer-row>div{background:var(--sand);border:1px solid var(--line);border-radius:6px;padding:12px 18px}.layer-row>b{font-weight:500;padding-left:18px}.layer-row.future>div{background:var(--lime);color:var(--green)}
+.compare th:first-child{width:20%}.compare td:last-child{color:var(--green)}.thread-flow{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:36px;margin-top:46px}.thread-step{border-top:1px solid var(--line);padding-top:20px}.thread-step h3{margin:22px 0 16px}.thread-step p{font-size:21px;line-height:1.45;color:var(--muted)}.thread-step .disclose{color:var(--green);margin-bottom:8px}.principle{font-size:30px;letter-spacing:-.7px;margin:35px 0 12px;color:var(--green)}
+.matching-flow{display:grid;grid-template-columns:1fr 50px 1fr 50px 1fr;align-items:center;margin-top:42px;gap:12px}.matching-flow>div{padding:26px 20px;border-top:1px solid var(--line)}.matching-flow h3{font-size:31px;margin:16px 0}.matching-flow p{font-size:19px;color:var(--muted)}.matching-flow .fit-result{background:var(--lime);border:1px solid var(--line);border-radius:10px}.math{text-align:center;font-size:32px;color:var(--green)}.spaced{margin-top:24px}.risk-table td:first-child{width:34%;font-weight:600}.risk-table td{padding-top:23px!important;padding-bottom:23px!important}.founder-layout{display:grid;grid-template-columns:1fr 1fr;gap:90px;margin-top:64px}.founder-mark{font-size:190px;letter-spacing:-15px;font-weight:650;line-height:1.1;color:var(--stone);margin-top:38px}.project-row{font-size:30px;padding:15px 0;border-bottom:1px solid var(--line)}.project-row small{font-size:17px}.founder-gap{margin-top:35px}.founder-gap p{font-size:22px;color:var(--muted);margin-top:12px}.closing .ask-amount{font-size:148px;letter-spacing:-8px;color:var(--green);margin-top:20px}.contact-links{font-size:17px;margin-top:10px}
+.slide:focus{outline:1px solid var(--line)}
+@media screen and (max-width:1000px){.cover-layout,.founder-layout,.thread-flow{grid-template-columns:1fr;gap:26px;margin-top:26px}.cover-layout h1{font-size:clamp(42px,8vw,76px);letter-spacing:-2px}.layer-diagram{margin-top:12px}.thread-step h3{margin-top:12px}.matching-flow{grid-template-columns:1fr;margin-top:28px;gap:0}.matching-flow>div{padding:20px}.matching-flow h3{font-size:27px}.math{font-size:24px}.founder-mark{display:none}.project-row{font-size:25px}.founder-gap{margin-top:24px}.closing .ask-amount{font-size:100px;letter-spacing:-5px}.principle{font-size:25px}.compare td,.risk-table td{font-size:17px!important}.compare th:first-child{width:18%}.nav-dots,.key-hint{display:none}.controls{gap:5px;padding:10px}.nav-left,.nav-right{gap:6px}.control{padding:7px 9px}#print{display:none}}
+
+
+/* Founder portfolio */
+#slide-12 .founder-layout{grid-template-columns:.85fr 1.15fr;gap:60px;margin-top:40px}
+#slide-12 .project-row{font-size:25px;padding:11px 0;line-height:1.25}
+#slide-12 .project-row p{font-size:18px;line-height:1.35;color:var(--muted);margin-top:6px}
+#slide-12 .founder-gap{margin-top:22px}
+#slide-12 .founder-gap h3{font-size:23px}
+#slide-12 .founder-gap p{font-size:19px;margin-top:8px}
+@media screen and (max-width:1000px){#slide-12 .founder-layout{grid-template-columns:1fr;gap:26px;margin-top:26px}#slide-12 .project-row{padding:16px 0}}
+
+/* Business definition: acquisition, sales and validation */
+#slide-1 .cover-layout{margin-top:32px}
+#slide-1 .cover-layout h1{font-size:83px}
+#slide-1 .raise-line{margin-top:24px}
+.business-premise{display:grid;grid-template-columns:1fr 1fr;gap:54px;margin-top:38px;border-top:1px solid var(--line);padding-top:21px}
+.business-premise h3{font-size:25px;color:var(--green)}
+.business-premise p{font-size:21px;color:var(--muted);margin-top:7px}
+#slide-3 .stack-row{padding:12px 0}
+#slide-6 .phase{min-height:270px;padding-bottom:20px}
+.sales-premise{border-top:1px solid var(--line);padding-top:22px;margin-top:10px}
+.sales-premise h3{font-size:27px;color:var(--green)}
+.sales-premise p{font-size:20px;line-height:1.4;max-width:1150px;margin-top:10px;color:var(--muted)}
+#slide-9 .section-head{margin-bottom:25px}
+#slide-9 .lede{margin-top:16px}
+#slide-9 .pilot{margin-top:24px}
+#slide-9 .terminal{padding:20px 25px}
+#slide-9 .terminal-body{padding-top:15px;font-size:17px}
+#slide-9 .terminal-body .command{margin-bottom:12px}
+#slide-9 .terminal-body .term-sponsor{margin-top:12px;padding-top:10px}
+#slide-9 .pilot-spec>div{padding:8px 0}
+#slide-9 .pilot-spec dd{font-size:18px}
+.validation-path{display:grid;grid-template-columns:1fr 1fr 1.3fr .85fr;gap:25px;margin-top:25px}
+.validation-path>div{border-top:1px solid var(--line);padding-top:11px}
+.validation-path span{font-size:13px;color:var(--green)}
+.validation-path h3{font-size:22px;margin:5px 0 6px}
+.validation-path p{font-size:17px;color:var(--muted);line-height:1.3}
+.pilot-boundary{margin-top:16px}
+#slide-13 .use{padding-top:18px;padding-bottom:20px}
+@media screen and (max-width:1000px){#slide-1 .cover-layout h1{font-size:clamp(42px,8vw,76px)}.business-premise{grid-template-columns:1fr;gap:20px;margin-top:26px}.validation-path{grid-template-columns:1fr 1fr}.validation-path h3{font-size:20px}#slide-6 .phase{min-height:0}.sales-premise h3{font-size:24px}}
+
+/* Revenue should visually outweigh serving cost. */
+#slide-8 .economics{grid-template-columns:1.4fr 80px 1fr;align-items:center}
+#slide-8 .money-box.income{min-height:330px;padding:32px 38px}
+#slide-8 .money-box:not(.income){min-height:250px;padding:25px 28px}
+#slide-8 .money-box.income h3{font-size:35px}
+@media screen and (max-width:1000px){#slide-8 .economics{grid-template-columns:1fr}#slide-8 .money-box.income{min-height:0;padding:30px}#slide-8 .money-box:not(.income){min-height:0;margin:0 18px;padding:24px}#slide-8 .money-box.income h3{font-size:30px}}
+
+/* Why Now */
+.why-now .section-head{margin-bottom:28px}.why-now .lede{font-size:24px;margin-top:18px}
+.era-list{margin-top:30px}.era-list>div{display:grid;grid-template-columns:180px 1fr;align-items:center;padding:17px 24px;border-top:1px solid var(--line)}.era-list h3{font-size:25px}.era-list p{font-size:28px;line-height:1.3}.era-list p span{margin:0 28px;color:var(--muted)}.era-list .ai-era{background:var(--lime);color:var(--green);border-bottom:1px solid var(--line)}
+.why-summary{font-size:23px;line-height:1.4;margin-top:26px;max-width:1200px}.why-close{font-size:24px;color:var(--green);margin-top:15px}.why-summary strong,.why-close strong{font-weight:600}
+@media screen and (max-width:1000px){.era-list>div{grid-template-columns:1fr;gap:9px;padding:17px 12px}.era-list p{font-size:19px}.era-list p span{margin:0 5px}.why-summary,.why-close{font-size:21px}.why-now .lede{font-size:20px}}
+
+/* Editorial hierarchy */
+.minimal-cover .cover-copy{margin-top:95px}
+.minimal-cover .cover-copy h1{font-size:110px;line-height:1.03;letter-spacing:-5px}
+.minimal-cover .cover-copy .lede{font-size:29px;margin-top:32px;line-height:1.45}
+.minimal-cover .raise-line{font-size:24px;margin-top:43px!important}
+.minimal-cover .raise-line strong{margin-left:0;font-size:28px}
+.why-now h2{font-size:60px}
+.why-now .era-list{margin-top:24px}.why-now .era-list>div{padding:13px 24px}
+.why-now .why-summary{font-size:23px;font-weight:500;margin-top:21px}
+.why-now .why-close{font-size:21px;font-weight:400;margin-top:10px}
+#slide-3 .insight .big{font-size:39px}
+#slide-6 .sales-premise h3{font-size:24px;font-weight:550}
+#slide-6 .sales-premise p{font-size:19px}
+.trust-line{font-size:37px;color:var(--green);font-weight:600;letter-spacing:-1px;margin-top:22px}
+#slide-7 .matching-flow{margin-top:25px}
+#slide-7 .matching-flow h3{font-size:28px;font-weight:550}
+#slide-7 .matching-flow>div{padding:19px 20px}
+#slide-7 .economic-bottom{margin-top:23px}
+#slide-7 .economic-bottom h3{font-weight:550}
+.equation-line{font-size:47px;line-height:1.2;font-weight:600;letter-spacing:-1.5px;margin-top:24px}
+.equation-line span{color:var(--green);padding:0 14px}
+#slide-8 .economics{margin-top:28px}
+#slide-8 .money-box.income{min-height:305px;padding:27px 32px}
+#slide-8 .money-box.income h3{font-size:31px;font-weight:550}
+#slide-8 .money-box:not(.income) h3{font-size:27px;font-weight:550}
+#slide-8 .economic-bottom{margin-top:22px}
+#slide-12 .project-row{padding:19px 0;font-size:27px}
+#slide-12 .project-row p{font-size:20px;line-height:1.4;max-width:600px}
+#slide-12 .founder-gap h3{font-weight:550}
+@media screen and (max-width:1000px){.minimal-cover .cover-copy{margin-top:65px}.minimal-cover .cover-copy h1{font-size:clamp(44px,9vw,80px);letter-spacing:-2px}.minimal-cover .cover-copy .lede{font-size:23px}.minimal-cover .cover-copy br{display:none}.why-now h2{font-size:clamp(33px,7vw,52px)}.trust-line{font-size:30px}.equation-line{font-size:32px;letter-spacing:-.8px}.equation-line span{padding:0 4px}#slide-8 .money-box.income{min-height:0}#slide-12 .project-row p{font-size:19px}}
+@media screen and (max-width:1000px){.minimal-cover .cover-copy h1 br{display:block}}
+
+/* User acquisition is central to the marketplace. */
+.acquisition-key{font-size:39px;font-weight:600;color:var(--green);line-height:1.2;letter-spacing:-1px;margin-top:26px}
+.acquisition-link{font-size:24px;color:var(--muted);margin-top:10px}
+#slide-6 .launch-path{margin-top:29px}
+#slide-6 .phase{min-height:240px;padding-top:21px}
+#slide-6 .phase h3{margin-top:20px;margin-bottom:15px}
+#slide-6 .sales-premise{padding-top:18px}
+@media screen and (max-width:1000px){.acquisition-key{font-size:30px;letter-spacing:-.6px}.acquisition-link{font-size:21px}#slide-6 .phase{min-height:0}}
+
+/* Final emphasis: five thesis anchors only. */
+.deck a,.deck a:hover{color:var(--ink)}
+.era-list .ai-era{background:var(--sand);color:var(--ink)}
+.why-now .why-close,.acquisition-key,.thread-step .disclose,.principle,.sales-premise h3,.math,.validation-path span,.use .num{color:var(--ink)}
+#slide-6 .phase.expand{border-color:var(--line)}
+#slide-6 .phase.expand h3{color:var(--ink)}
+.fit-result{background:var(--sand)!important}
+#slide-8 .money-box.income{background:var(--sand);color:var(--ink);border-color:var(--line)}
+#slide-8 .money-box.income .eyebrow{color:var(--muted)}
+#slide-8 .greater{color:var(--ink)}
+.terminal-head .model,.terminal-body .task span,.terminal-body .command::before{color:var(--paper)}
+.minimal-cover .cover-copy h1,#slide-4 h2,.trust-line,.equation-line,.equation-line span{color:var(--green)}
+#slide-10 .principle{font-weight:650}
+.compare td:last-child{color:var(--ink)}
+
+/* Problem slide: the unit of sale is the key takeaway. */
+#slide-3 .insight .placement-statement{font-size:38px;line-height:1.18;font-weight:700;letter-spacing:-1px;color:var(--ink);max-width:540px;margin-top:30px}
+#slide-3 .insight .big{font-size:30px;line-height:1.25;font-weight:500;letter-spacing:-.7px}
+@media screen and (max-width:1000px){#slide-3 .insight .placement-statement{font-size:31px}#slide-3 .insight .big{font-size:27px}}
