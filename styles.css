@@ -261,6 +261,9 @@ a { color: inherit; }
   border: 1px solid var(--line);
   animation: rise .5s var(--ease);
 }
+.idea-card { scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+.idea-card.wide { grid-template-columns: 1fr; width: min(1040px, 100%); }
+.idea-card.wide .idea-text { max-width: 46em; }
 .idea-frame { position: relative; aspect-ratio: 4 / 3; background: var(--bg); overflow: hidden; }
 .idea-frame canvas, .idea-frame img {
   position: absolute;
@@ -275,7 +278,7 @@ a { color: inherit; }
 .idea-meta { margin: 0; color: var(--accent); font-size: 12px; }
 .idea-text h3 { margin: 14px 0 0; font: 400 clamp(32px, 3.4vw, 50px)/1.02 var(--serif); letter-spacing: -.01em; }
 .idea-body { margin-top: 20px; font: 400 18px/1.5 var(--serif); color: var(--fg-2); }
-.idea-body p { margin: 0 0 .8em; }
+.idea-body p { margin: 0 0 .8em; white-space: pre-line; }
 .idea-x { margin-top: auto; padding-top: 24px; font-size: 12px; color: var(--fg-2); text-decoration: none; }
 .idea-x:hover { color: var(--accent); }
 .idea-x[hidden] { display: none; }

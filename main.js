@@ -205,14 +205,24 @@
 
     img.classList.remove('on');
     img.alt = idea.title;
+    fit(4 / 3);
     if (!mField) mField = G.create($('canvas', frame), { host: frame, ambient: .05, cell: w => (w < 500 ? 6 : 8), lens: 110 });
-    if (!mField) { if (idea.image) { img.src = idea.image; img.classList.add('on'); } return; }
+    if (!mField) {
+      if (idea.image) { img.onload = () => fit(img.naturalWidth / img.naturalHeight); img.src = idea.image; img.classList.add('on'); }
+      return;
+    }
     mField.resize();
     if (mItem) mItem.remove();
     if (idea.image) {
       mItem = mField.add(img, { kind: 'image', style: ST.image, img, noise: 1 });
-      const go = () => { mItem.dirty = true; mItem.to(0, 1900, 150, () => img.classList.add('on')); };
+      const go = () => {
+        fit(img.naturalWidth / img.naturalHeight);
+        mField.resize();
+        mItem.dirty = true;
+        mItem.to(0, 1900, 150, () => img.classList.add('on'));
+      };
       img.onload = go;
+      img.crossOrigin = 'anonymous';
       img.src = idea.image;
       if (img.complete && img.naturalWidth) go();
     } else {
@@ -220,6 +230,12 @@
       mItem = mField.add(frame, { kind: 'box', style: ST.posted, seed: i * 7919 + 131, noise: 1 });
       mItem.to(0, 1600, 100);
     }
+  }
+
+  // Images keep their own aspect ratio; wide ones go full width above the text.
+  function fit(ratio) {
+    frame.style.aspectRatio = String(ratio);
+    $('.idea-card', modal).classList.toggle('wide', ratio > 1.45);
   }
 
   function closeIdea() {
