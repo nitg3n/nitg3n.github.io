@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>생일을 축하합니다</title>
+  <meta name="description" content="생일을 축하합니다." />
+  <meta name="color-scheme" content="light" />
+  <link rel="preload" href="smiley.png" as="image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23ffffff' stroke='%230a0a0a' stroke-width='3'/%3E%3Cpath d='M50 50 50 2 91.6 26Z' fill='%230a0a0a'/%3E%3Cpath d='M50 50 91.6 74 50 98Z' fill='%230a0a0a'/%3E%3Cpath d='M50 50 8.4 74 8.4 26Z' fill='%230a0a0a'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%230a0a0a'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" crossorigin />
+  <script>
+    try {
+      if (localStorage.getItem("birthday-roulette.used.v1") === "1") {
+        document.documentElement.classList.add("is-used");
+      }
+    } catch (error) {
+      /* storage unavailable */
+    }
+  </script>
+  <style>
+    :root {
+      --ink: #0a0a0a;
+      --paper: #ffffff;
+      --night: #050505;
+      --sans: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    html.is-used .intro,
+    html.is-used .photo-step {
+      display: none !important;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      overflow-x: hidden;
+      color: var(--ink);
+      font-family: var(--sans);
+      background: var(--paper);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 4px;
+    }
+
+    /* ---------- birthday intro ---------- */
+
+    .intro {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: var(--night);
+      opacity: 1;
+      transition: opacity 0.8s ease;
+    }
+
+    .intro.is-leaving {
+      opacity: 0;
+    }
+
+    .celebration {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .intro::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(0, 0, 0, 0.48) 0%,
+        rgba(0, 0, 0, 0.25) 42%,
+        rgba(0, 0, 0, 0) 72%
+      );
+    }
+
+    .intro-title {
+      position: relative;
+      z-index: 2;
+      max-width: 1000px;
+      margin: 0;
+      padding: 0 24px;
+      color: #ffffff;
+      font-size: clamp(38px, 6.6vw, 72px);
+      font-weight: 700;
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+      text-align: center;
+      word-break: keep-all;
+      text-wrap: balance;
+      text-shadow: 0 4px 36px rgba(0, 0, 0, 0.5);
+      animation: introTitleIn 1s 0.15s cubic-bezier(0.22, 0.75, 0.22, 1) both;
+    }
+
+    @keyframes introTitleIn {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .sound-prompt {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+      animation: promptIn 0.4s ease both;
+    }
+
+    .sound-prompt:hover {
+      border-color: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+    }
+
+    .sound-prompt:focus-visible {
+      outline-color: #ffffff;
+    }
+
+    .sound-prompt svg {
+      width: 14px;
+      height: 14px;
+      display: block;
+    }
+
+    .intro-actions {
+      position: absolute;
+      left: 50%;
+      bottom: max(30px, 5.5vh);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 11px;
+      transform: translateX(-50%);
+    }
+
+    .continue {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 12px 21px;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      background: transparent;
+      color: #0a0a0a;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .continue svg {
+      display: block;
+      width: 14px;
+      height: 14px;
+      transition: transform 0.2s ease;
+    }
+
+    .continue:hover {
+      background: #0a0a0a;
+      color: #ffffff;
+    }
+
+    .continue:hover svg {
+      transform: translateX(3px);
+    }
+
+    .intro-continue {
+      color: #ffffff;
+    }
+
+    .intro-continue:hover {
+      background: #ffffff;
+      color: #050505;
+    }
+
+    .intro-continue:focus-visible {
+      outline-color: #ffffff;
+    }
+
+    .photo-continue {
+      margin-top: 30px;
+      background: #ffffff;
+      color: #0a0a0a;
+    }
+
+    .photo-continue:hover {
+      background: #0a0a0a;
+      color: #ffffff;
+    }
+
+    @keyframes promptIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ---------- photo step ---------- */
+
+    .photo-step {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      padding: 40px 24px;
+      background: var(--paper);
+      opacity: 1;
+      transition: opacity 0.7s ease;
+    }
+
+    .photo-step.is-leaving {
+      opacity: 0;
+    }
+
+    .photo-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 560px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.8s 0.15s ease, transform 0.8s 0.15s cubic-bezier(0.22, 0.75, 0.22, 1);
+    }
+
+    .photo-step.is-visible .photo-inner {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .smiley {
+      display: block;
+      width: min(82vw, 400px);
+      height: auto;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .photo-copy {
+      max-width: 480px;
+      margin: 30px 0 0;
+      color: var(--ink);
+      font-size: clamp(17px, 1.65vw, 21px);
+      font-weight: 600;
+      line-height: 1.7;
+      letter-spacing: -0.01em;
+      word-break: keep-all;
+    }
+
+    @media (max-width: 560px) {
+      .intro-title {
+        padding: 0 22px;
+      }
+
+      .intro-actions {
+        bottom: 26px;
+      }
+
+      .photo-step {
+        padding: 28px 20px;
+      }
+
+      .photo-copy {
+        margin-top: 24px;
+        font-size: 17px;
+      }
+
+      .photo-continue {
+        margin-top: 24px;
+      }
+    }
+
+    @media (max-height: 560px) {
+      .intro-actions {
+        bottom: 16px;
+      }
+
+      .intro-continue {
+        padding: 9px 17px;
+      }
+
+      .photo-step {
+        padding: 18px 20px;
+      }
+
+      .smiley {
+        width: min(56vw, 280px);
+      }
+
+      .photo-copy {
+        margin-top: 14px;
+        font-size: 15px;
+      }
+
+      .photo-continue {
+        margin-top: 14px;
+        padding: 9px 17px;
+        font-size: 12px;
+      }
+    }
+
+    /* ---------- roulette ---------- */
+
+    .stage {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100svh;
+      padding: 32px 22px;
+    }
+
+    .roulette {
+      width: min(88vw, 600px);
+      width: min(88vw, 72svh, 600px);
+    }
+
+    .wheel-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+    }
+
+    .wheel-wrap canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      filter: drop-shadow(0 26px 46px rgba(0, 0, 0, 0.14));
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .wheel-wrap.is-spinning canvas {
+      cursor: default;
+    }
+
+    .stage.is-finished .wheel-wrap canvas {
+      cursor: default;
+    }
+
+    .stage.is-finished .spin {
+      opacity: 0.32;
+    }
+
+    .pointer {
+      position: absolute;
+      left: 50%;
+      top: -20px;
+      z-index: 3;
+      line-height: 0;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .spin {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      display: grid;
+      place-items: center;
+      width: clamp(72px, 17%, 98px);
+      aspect-ratio: 1 / 1;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: var(--ink);
+      box-shadow:
+        0 0 0 7px var(--paper),
+        0 12px 26px rgba(0, 0, 0, 0.2);
+      color: var(--paper);
+      cursor: pointer;
+      transform: translate(-50%, -50%);
+      transition: transform 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .spin::after {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ffffff;
+      transition: transform 0.2s ease;
+    }
+
+    .spin:hover:not(:disabled) {
+      transform: translate(-50%, -50%) scale(1.035);
+    }
+
+    .spin:hover:not(:disabled)::after {
+      transform: scale(1.4);
+    }
+
+    .spin:active:not(:disabled) {
+      transform: translate(-50%, -50%) scale(0.96);
+    }
+
+    .spin:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 12px;
+    }
+
+    .spin:disabled {
+      cursor: default;
+    }
+
+    /* ---------- result window ---------- */
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.78);
+      -webkit-backdrop-filter: blur(7px);
+      backdrop-filter: blur(7px);
+      opacity: 0;
+      transition: opacity 0.22s ease;
+    }
+
+    .overlay.is-open {
+      opacity: 1;
+    }
+
+    .result-window {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: min(80vw, 380px);
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      border-radius: 2px;
+      background: #0a0a0a;
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+        0 30px 80px rgba(0, 0, 0, 0.28);
+      opacity: 0;
+      transform: translateY(12px) scale(0.97);
+      transition: opacity 0.25s ease, transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+      outline: none;
+    }
+
+    .overlay.is-open .result-window {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .fireworks {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .result-text {
+      position: relative;
+      z-index: 2;
+      margin: 0;
+      color: #ffffff;
+      font-size: clamp(30px, 5vw, 38px);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .result-text::before {
+      content: "";
+      position: absolute;
+      inset: -14px -22px;
+      z-index: -1;
+      background: radial-gradient(ellipse at center, rgba(10, 10, 10, 0.98) 48%, rgba(10, 10, 10, 0) 100%);
+      pointer-events: none;
+    }
+
+    .close {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      z-index: 3;
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(10, 10, 10, 0.6);
+      color: #ffffff;
+      cursor: pointer;
+      opacity: 0.72;
+      transition: opacity 0.18s ease, background-color 0.18s ease;
+    }
+
+    .close:hover {
+      opacity: 1;
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    .close:focus-visible {
+      outline-color: #ffffff;
+      outline-offset: 0;
+    }
+
+    .close svg {
+      display: block;
+      width: 15px;
+      height: 15px;
+    }
+
+    @media (hover: none) {
+      .spin:hover:not(:disabled) {
+        transform: translate(-50%, -50%);
+      }
+
+      .spin:hover:not(:disabled)::after {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .stage {
+        padding: 24px 20px;
+      }
+
+      .pointer {
+        top: -16px;
+      }
+
+      .result-window {
+        width: min(84vw, 330px);
+      }
+
+      .result-text {
+        font-size: clamp(28px, 8vw, 34px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .intro,
+      .intro-title,
+      .sound-prompt,
+      .photo-step,
+      .photo-inner {
+        animation: none;
+        transition: none;
+      }
+
+      .overlay,
+      .result-window,
+      .spin,
+      .spin::after {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="intro" id="intro" aria-label="생일 축하">
+    <canvas class="celebration" id="celebration" aria-hidden="true"></canvas>
+    <h1 class="intro-title">생일을 축하합니다</h1>
+    <div class="intro-actions">
+      <button class="sound-prompt" id="soundPrompt" type="button" aria-label="폭죽 소리 켜기" hidden>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M11 5.5 6.8 9H3.5v6h3.3l4.2 3.5V5.5Z" fill="currentColor" />
+          <path d="M15.2 8.6a4.8 4.8 0 0 1 0 6.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          <path d="M18.2 6a9 9 0 0 1 0 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+        <span>소리 켜기</span>
+      </button>
+      <button class="continue intro-continue" id="introContinue" type="button">
+        <span>계속</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <section class="photo-step" id="photoStep" aria-label="룰렛 안내" hidden>
+    <div class="photo-inner">
+      <img class="smiley" src="smiley.png" width="401" height="239" alt="엄지척하는 웃는 얼굴" draggable="false" />
+      <p class="photo-copy">룰렛을 돌리고 결과를 DM으로 보내주세요</p>
+      <button class="continue photo-continue" id="photoContinue" type="button">
+        <span>룰렛 열기</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <main class="stage" id="stage" aria-hidden="true" inert>
+    <div class="roulette">
+      <div class="wheel-wrap" id="wheelWrap">
+        <canvas id="wheel" aria-hidden="true"></canvas>
+        <div class="pointer" aria-hidden="true">
+          <svg viewBox="0 0 16 40" width="16" height="40" fill="none">
+            <circle cx="8" cy="4" r="3.5" fill="#0a0a0a" />
+            <line x1="8" y1="8" x2="8" y2="24" stroke="#0a0a0a" stroke-width="2" />
+            <path d="M8 39 2.5 24h11L8 39Z" fill="#ffffff" stroke="#0a0a0a" stroke-width="1.5" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <button class="spin" id="spinBtn" type="button" aria-label="돌리기"></button>
+      </div>
+    </div>
+  </main>
+
+  <div class="overlay" id="overlay" hidden>
+    <div class="result-window" id="resultWindow" role="dialog" aria-modal="true" aria-labelledby="resultText" tabindex="-1">
+      <canvas class="fireworks" id="fireworks" aria-hidden="true"></canvas>
+      <p class="result-text" id="resultText">아무거나</p>
+      <button class="close" id="closeBtn" type="button" aria-label="닫기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6 6 18" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      /* ---------- dom ---------- */
+
+      const USED_KEY = "birthday-roulette.used.v1";
+
+      const intro = document.getElementById("intro");
+      const celebrationCanvas = document.getElementById("celebration");
+      const celCtx = celebrationCanvas.getContext("2d");
+      const soundPrompt = document.getElementById("soundPrompt");
+      const introContinue = document.getElementById("introContinue");
+      const photoStep = document.getElementById("photoStep");
+      const photoContinue = document.getElementById("photoContinue");
+      const stage = document.getElementById("stage");
+
+      const wheelCanvas = document.getElementById("wheel");
+      const ctx = wheelCanvas.getContext("2d");
+      const wheelWrap = document.getElementById("wheelWrap");
+      const spinBtn = document.getElementById("spinBtn");
+      const overlay = document.getElementById("overlay");
+      const resultWindow = document.getElementById("resultWindow");
+      const closeBtn = document.getElementById("closeBtn");
+      const fwCanvas = document.getElementById("fireworks");
+      const fwCtx = fwCanvas.getContext("2d");
+
+      /* ---------- state ---------- */
+
+      const SEGMENTS = 6;
+      const reduceMotion =
+        window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      let rotation = 0;
+      let spinning = false;
+      let modalOpen = false;
+      let closing = false;
+      let ready = false;
+      let hasSpun = false;
+      let wheelSize = 0;
+      let closeTimer = 0;
+
+      let introActive = true;
+      let photoActive = false;
+
+      let audioCtx = null;
+      let audioMaster = null;
+      let noiseBuffer = null;
+      let soundStarted = false;
+      let soundPromptTimer = 0;
+
+      let particleRaf = 0;
+      let particles = [];
+      let bursts = [];
+      let rings = [];
+      let fireworkStart = 0;
+      let fireworkLast = 0;
+
+      let celW = 0;
+      let celH = 0;
+      let celRaf = 0;
+      let celRunning = false;
+      let celLast = 0;
+      let celElapsed = 0;
+      let celNextRocket = 0;
+      let celParticles = [];
+      let celRockets = [];
+      let celRings = [];
+      let celNextBurst = 0;
+      let celColorIndex = 0;
+
+      const FIREWORK_COLORS = [
+        "#ff4d8d",
+        "#ffd166",
+        "#4cc9f0",
+        "#b388ff",
+        "#7bf1a8",
+        "#ff8a4c",
+        "#ff6b6b",
+        "#f9f871",
+      ];
+
+      /* ---------- helpers ---------- */
+
+      function norm360(deg) {
+        return ((deg % 360) + 360) % 360;
+      }
+
+      function nextCelebrationColor() {
+        const color = FIREWORK_COLORS[celColorIndex % FIREWORK_COLORS.length];
+        celColorIndex += 1;
+        return color;
+      }
+
+      function hasUsedBefore() {
+        try {
+          return localStorage.getItem(USED_KEY) === "1";
+        } catch {
+          return false;
+        }
+      }
+
+      function markUsed() {
+        try {
+          localStorage.setItem(USED_KEY, "1");
+        } catch {
+          /* storage unavailable */
+        }
+      }
+
+      /* ==========================================================
+         ROULETTE
+         ========================================================== */
+
+      function drawWheel() {
+        if (!wheelSize) return;
+
+        const size = wheelSize;
+        const radius = size / 2 - Math.max(3, size * 0.008);
+        const segment = (Math.PI * 2) / SEGMENTS;
+        const fontSize = Math.min(radius * 0.22, 68);
+        const labelRadius = radius * 0.63;
+
+        ctx.clearRect(0, 0, size, size);
+        ctx.save();
+        ctx.translate(size / 2, size / 2);
+        ctx.rotate((rotation * Math.PI) / 180);
+
+        for (let i = 0; i < SEGMENTS; i += 1) {
+          const start = i * segment;
+          const end = start + segment;
+
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.arc(0, 0, radius, start, end);
+          ctx.closePath();
+          ctx.fillStyle = i % 2 === 0 ? "#0a0a0a" : "#ffffff";
+          ctx.fill();
+          ctx.strokeStyle = ctx.fillStyle;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+
+        ctx.font = `600 ${fontSize}px "Pretendard Variable", Pretendard, "Malgun Gothic", sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        for (let i = 0; i < SEGMENTS; i += 1) {
+          const mid = i * segment + segment / 2;
+          ctx.fillStyle = i % 2 === 0 ? "#ffffff" : "#0a0a0a";
+          ctx.fillText("?", Math.cos(mid) * labelRadius, Math.sin(mid) * labelRadius);
+        }
+
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, Math.PI * 2);
+        ctx.strokeStyle = "#0a0a0a";
+        ctx.lineWidth = Math.max(2, size * 0.004);
+        ctx.stroke();
+
+        ctx.restore();
+      }
+
+      function resizeCanvas() {
+        const width = wheelWrap.clientWidth;
+        if (!width) return;
+
+        wheelSize = width;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+        const pixels = Math.round(width * dpr);
+
+        if (wheelCanvas.width !== pixels || wheelCanvas.height !== pixels) {
+          wheelCanvas.width = pixels;
+          wheelCanvas.height = pixels;
+        }
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        drawWheel();
+      }
+
+      /* ==========================================================
+         RESULT WINDOW FIREWORKS
+         ========================================================== */
+
+      function fitFireworks() {
+        const width = resultWindow.clientWidth;
+        const height = resultWindow.clientHeight;
+        if (!width || !height) return;
+
+        const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+        fwCanvas.width = Math.round(width * dpr);
+        fwCanvas.height = Math.round(height * dpr);
+        fwCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        fwCtx.clearRect(0, 0, width, height);
+      }
+
+      function spawnBurst(burst) {
+        for (let i = 0; i < burst.count; i += 1) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = burst.speed * (0.28 + Math.random() * 0.72);
+          const life = 0.9 + Math.random() * 0.8;
+
+          particles.push({
+            x: burst.x + (Math.random() - 0.5) * 4,
+            y: burst.y + (Math.random() - 0.5) * 4,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            life,
+            maxLife: life,
+            size: Math.random() < 0.22 ? 2.2 : Math.random() < 0.5 ? 1.5 : 1,
+          });
+        }
+
+        rings.push({
+          x: burst.x,
+          y: burst.y,
+          life: 0,
+          maxLife: 0.42,
+          to: 24 + burst.speed * 0.22,
+        });
+      }
+
+      function tickFireworks(now) {
+        const width = resultWindow.clientWidth;
+        const height = resultWindow.clientHeight;
+        const elapsed = now - fireworkStart;
+        const dt = Math.min(0.032, Math.max(0.001, (now - fireworkLast) / 1000));
+        fireworkLast = now;
+
+        while (bursts.length && elapsed >= bursts[0].at) {
+          spawnBurst(bursts.shift());
+        }
+
+        fwCtx.fillStyle = "rgba(10, 10, 10, 0.24)";
+        fwCtx.fillRect(0, 0, width, height);
+        fwCtx.lineCap = "round";
+
+        for (let i = rings.length - 1; i >= 0; i -= 1) {
+          const ring = rings[i];
+          ring.life += dt;
+
+          if (ring.life >= ring.maxLife) {
+            rings.splice(i, 1);
+            continue;
+          }
+
+          const t = ring.life / ring.maxLife;
+          const radius = 3 + (ring.to - 3) * (1 - Math.pow(1 - t, 2));
+          fwCtx.beginPath();
+          fwCtx.arc(ring.x, ring.y, radius, 0, Math.PI * 2);
+          fwCtx.strokeStyle = `rgba(255, 255, 255, ${(1 - t) * 0.22})`;
+          fwCtx.lineWidth = 1;
+          fwCtx.stroke();
+        }
+
+        for (let i = particles.length - 1; i >= 0; i -= 1) {
+          const p = particles[i];
+          const prevX = p.x;
+          const prevY = p.y;
+
+          p.life -= dt;
+          if (p.life <= 0) {
+            particles.splice(i, 1);
+            continue;
+          }
+
+          p.vy += 110 * dt;
+          p.vx *= Math.pow(0.55, dt);
+          p.vy *= Math.pow(0.75, dt);
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+
+          const alpha = Math.max(0, p.life / p.maxLife);
+
+          fwCtx.beginPath();
+          fwCtx.moveTo(prevX, prevY);
+          fwCtx.lineTo(p.x, p.y);
+          fwCtx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.14})`;
+          fwCtx.lineWidth = p.size * 2.6;
+          fwCtx.stroke();
+
+          fwCtx.beginPath();
+          fwCtx.moveTo(prevX, prevY);
+          fwCtx.lineTo(p.x, p.y);
+          fwCtx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+          fwCtx.lineWidth = p.size;
+          fwCtx.stroke();
+
+          if (p.size > 1.2) {
+            fwCtx.beginPath();
+            fwCtx.arc(p.x, p.y, p.size * 0.8, 0, Math.PI * 2);
+            fwCtx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.95})`;
+            fwCtx.fill();
+          }
+        }
+
+        if (bursts.length || particles.length || rings.length) {
+          particleRaf = requestAnimationFrame(tickFireworks);
+        } else {
+          particleRaf = 0;
+        }
+      }
+
+      function startFireworks() {
+        if (reduceMotion) return;
+
+        fitFireworks();
+
+        const w = resultWindow.clientWidth;
+        const h = resultWindow.clientHeight;
+        particles = [];
+        rings = [];
+        bursts = [
+          { at: 0, x: w * 0.5, y: h * 0.44, count: 80, speed: 215 },
+          { at: 80, x: w * 0.2, y: h * 0.33, count: 42, speed: 160 },
+          { at: 260, x: w * 0.8, y: h * 0.35, count: 42, speed: 165 },
+          { at: 520, x: w * 0.32, y: h * 0.68, count: 36, speed: 145 },
+          { at: 760, x: w * 0.7, y: h * 0.66, count: 36, speed: 145 },
+          { at: 1120, x: w * 0.5, y: h * 0.26, count: 52, speed: 185 },
+          { at: 1750, x: w * 0.18, y: h * 0.55, count: 32, speed: 135 },
+          { at: 2000, x: w * 0.82, y: h * 0.52, count: 32, speed: 135 },
+          { at: 2500, x: w * 0.5, y: h * 0.46, count: 62, speed: 195 },
+          { at: 3150, x: w * 0.5, y: h * 0.3, count: 38, speed: 160 },
+        ];
+
+        fireworkStart = performance.now();
+        fireworkLast = fireworkStart;
+        cancelAnimationFrame(particleRaf);
+        particleRaf = requestAnimationFrame(tickFireworks);
+      }
+
+      function stopFireworks() {
+        cancelAnimationFrame(particleRaf);
+        particleRaf = 0;
+        particles = [];
+        bursts = [];
+        rings = [];
+        fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+      }
+
+      /* ==========================================================
+         BIRTHDAY CELEBRATION
+         ========================================================== */
+
+      function resizeCelebration() {
+        const rect = celebrationCanvas.getBoundingClientRect();
+        celW = Math.max(1, rect.width);
+        celH = Math.max(1, rect.height);
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        celebrationCanvas.width = Math.round(celW * dpr);
+        celebrationCanvas.height = Math.round(celH * dpr);
+        celCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        celCtx.fillStyle = "#050505";
+        celCtx.fillRect(0, 0, celW, celH);
+      }
+
+      function addCelebrationBurst(x, y, color, count = 62, speed = 255) {
+        for (let i = 0; i < count; i += 1) {
+          const angle = Math.random() * Math.PI * 2;
+          const velocity = speed * (0.22 + Math.random() * 0.78);
+          const life = 1.15 + Math.random() * 1.2;
+
+          celParticles.push({
+            x,
+            y,
+            vx: Math.cos(angle) * velocity,
+            vy: Math.sin(angle) * velocity,
+            life,
+            maxLife: life,
+            color: Math.random() < 0.16 ? "#ffffff" : color,
+            size: Math.random() < 0.25 ? 2.2 : 1.1,
+          });
+        }
+
+        celRings.push({
+          x,
+          y,
+          color,
+          life: 0,
+          maxLife: 0.55,
+          to: 28 + Math.random() * 36,
+        });
+      }
+
+      function spawnRocket() {
+        const x = celW * (0.08 + Math.random() * 0.84);
+        const targetY = celH * (0.12 + Math.random() * 0.32);
+        const startY = celH + 20;
+        const duration = 0.8 + Math.random() * 0.45;
+        const color = nextCelebrationColor();
+
+        celRockets.push({
+          x,
+          targetY,
+          y: startY,
+          vy: (targetY - startY) / duration,
+          color,
+        });
+      }
+
+      function tickCelebration(now) {
+        if (!celRunning) return;
+
+        const dt = Math.min(0.035, Math.max(0.001, (now - celLast) / 1000));
+        celLast = now;
+        celElapsed += dt * 1000;
+
+        celCtx.globalCompositeOperation = "source-over";
+        celCtx.fillStyle = "rgba(5, 5, 5, 0.16)";
+        celCtx.fillRect(0, 0, celW, celH);
+
+        celCtx.globalCompositeOperation = "lighter";
+        celCtx.lineCap = "round";
+
+        if (celElapsed >= celNextRocket) {
+          spawnRocket();
+          celNextRocket = celElapsed + 300 + Math.random() * 320;
+        }
+
+        if (celElapsed >= celNextBurst) {
+          addCelebrationBurst(
+            celW * (0.12 + Math.random() * 0.76),
+            celH * (0.13 + Math.random() * 0.48),
+            nextCelebrationColor(),
+            48 + Math.floor(Math.random() * 20),
+            220
+          );
+          celNextBurst = celElapsed + 680 + Math.random() * 420;
+        }
+
+        for (let i = celRockets.length - 1; i >= 0; i -= 1) {
+          const rocket = celRockets[i];
+          rocket.y += rocket.vy * dt;
+
+          if (rocket.y <= rocket.targetY) {
+            addCelebrationBurst(rocket.x, rocket.targetY, rocket.color, 85, 290);
+            celRockets.splice(i, 1);
+            continue;
+          }
+
+          celCtx.beginPath();
+          celCtx.moveTo(rocket.x, rocket.y);
+          celCtx.lineTo(rocket.x, rocket.y + 14);
+          celCtx.strokeStyle = rocket.color;
+          celCtx.globalAlpha = 0.85;
+          celCtx.lineWidth = 2;
+          celCtx.stroke();
+
+          celCtx.beginPath();
+          celCtx.arc(rocket.x, rocket.y, 1.8, 0, Math.PI * 2);
+          celCtx.fillStyle = "#ffffff";
+          celCtx.globalAlpha = 0.9;
+          celCtx.fill();
+          celCtx.globalAlpha = 1;
+        }
+
+        for (let i = celRings.length - 1; i >= 0; i -= 1) {
+          const ring = celRings[i];
+          ring.life += dt;
+
+          if (ring.life >= ring.maxLife) {
+            celRings.splice(i, 1);
+            continue;
+          }
+
+          const t = ring.life / ring.maxLife;
+          const radius = 4 + (ring.to - 4) * (1 - Math.pow(1 - t, 2));
+          celCtx.beginPath();
+          celCtx.arc(ring.x, ring.y, radius, 0, Math.PI * 2);
+          celCtx.strokeStyle = ring.color;
+          celCtx.globalAlpha = (1 - t) * 0.45;
+          celCtx.lineWidth = 1.2;
+          celCtx.stroke();
+
+          if (t < 0.3) {
+            const flash = 1 - t / 0.3;
+            const glow = celCtx.createRadialGradient(ring.x, ring.y, 0, ring.x, ring.y, 52);
+            glow.addColorStop(0, `rgba(255, 255, 255, ${0.5 * flash})`);
+            glow.addColorStop(0.45, `rgba(255, 255, 255, ${0.15 * flash})`);
+            glow.addColorStop(1, "rgba(255, 255, 255, 0)");
+            celCtx.fillStyle = glow;
+            celCtx.beginPath();
+            celCtx.arc(ring.x, ring.y, 52, 0, Math.PI * 2);
+            celCtx.fill();
+          }
+
+          celCtx.globalAlpha = 1;
+        }
+
+        for (let i = celParticles.length - 1; i >= 0; i -= 1) {
+          const p = celParticles[i];
+          const prevX = p.x;
+          const prevY = p.y;
+
+          p.life -= dt;
+          if (p.life <= 0) {
+            celParticles.splice(i, 1);
+            continue;
+          }
+
+          p.vy += 62 * dt;
+          p.vx *= Math.pow(0.56, dt);
+          p.vy *= Math.pow(0.72, dt);
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+
+          const alpha = Math.max(0, p.life / p.maxLife);
+
+          celCtx.beginPath();
+          celCtx.moveTo(prevX, prevY);
+          celCtx.lineTo(p.x, p.y);
+          celCtx.strokeStyle = p.color;
+          celCtx.globalAlpha = alpha * 0.22;
+          celCtx.lineWidth = p.size * 2.8;
+          celCtx.stroke();
+
+          celCtx.beginPath();
+          celCtx.moveTo(prevX, prevY);
+          celCtx.lineTo(p.x, p.y);
+          celCtx.strokeStyle = p.color;
+          celCtx.globalAlpha = alpha;
+          celCtx.lineWidth = p.size;
+          celCtx.stroke();
+
+          celCtx.beginPath();
+          celCtx.arc(p.x, p.y, p.size * 0.8, 0, Math.PI * 2);
+          celCtx.fillStyle = p.color;
+          celCtx.globalAlpha = alpha * 0.95;
+          celCtx.fill();
+          celCtx.globalAlpha = 1;
+        }
+
+        celRaf = requestAnimationFrame(tickCelebration);
+      }
+
+      function startCelebration() {
+        resizeCelebration();
+
+        celParticles = [];
+        celRockets = [];
+        celRings = [];
+        celElapsed = 0;
+        celNextRocket = 90;
+        celNextBurst = 520;
+        celRunning = true;
+        celLast = performance.now();
+
+        addCelebrationBurst(celW * 0.2, celH * 0.34, "#ff4d8d", 78, 250);
+        addCelebrationBurst(celW * 0.8, celH * 0.3, "#4cc9f0", 74, 255);
+        addCelebrationBurst(celW * 0.42, celH * 0.2, "#ffd166", 62, 235);
+        addCelebrationBurst(celW * 0.66, celH * 0.56, "#b388ff", 58, 230);
+
+        cancelAnimationFrame(celRaf);
+        celRaf = requestAnimationFrame(tickCelebration);
+      }
+
+      function stopCelebration() {
+        celRunning = false;
+        cancelAnimationFrame(celRaf);
+        celRaf = 0;
+      }
+
+      function celebrateNow() {
+        if (!celRunning) return;
+        addCelebrationBurst(celW * 0.3, celH * 0.34, nextCelebrationColor(), 85, 280);
+        addCelebrationBurst(celW * 0.7, celH * 0.3, nextCelebrationColor(), 75, 260);
+      }
+
+      /* ==========================================================
+         BIRTHDAY SFX
+         ========================================================== */
+
+      function createNoiseBuffer(context, seconds) {
+        const length = Math.floor(context.sampleRate * seconds);
+        const buffer = context.createBuffer(1, length, context.sampleRate);
+        const data = buffer.getChannelData(0);
+
+        for (let i = 0; i < length; i += 1) {
+          data[i] = Math.random() * 2 - 1;
+        }
+
+        return buffer;
+      }
+
+      function createReverbBuffer(context, seconds) {
+        const length = Math.floor(context.sampleRate * seconds);
+        const buffer = context.createBuffer(2, length, context.sampleRate);
+
+        for (let channel = 0; channel < 2; channel += 1) {
+          const data = buffer.getChannelData(channel);
+          for (let i = 0; i < length; i += 1) {
+            data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2.4);
+          }
+        }
+
+        return buffer;
+      }
+
+      function getAudioContext() {
+        if (audioCtx) return audioCtx;
+
+        const AudioCtor = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtor) return null;
+
+        try {
+          audioCtx = new AudioCtor();
+          audioMaster = audioCtx.createGain();
+          audioMaster.gain.value = 0.72;
+
+          const compressor = audioCtx.createDynamicsCompressor();
+          compressor.threshold.value = -18;
+          compressor.knee.value = 20;
+          compressor.ratio.value = 5;
+          compressor.attack.value = 0.003;
+          compressor.release.value = 0.25;
+
+          const dry = audioCtx.createGain();
+          dry.gain.value = 1;
+
+          const reverb = audioCtx.createConvolver();
+          reverb.buffer = createReverbBuffer(audioCtx, 1.5);
+
+          const wet = audioCtx.createGain();
+          wet.gain.value = 0.16;
+
+          audioMaster.connect(dry);
+          dry.connect(compressor);
+          audioMaster.connect(reverb);
+          reverb.connect(wet);
+          wet.connect(compressor);
+          compressor.connect(audioCtx.destination);
+
+          noiseBuffer = createNoiseBuffer(audioCtx, 1.2);
+          return audioCtx;
+        } catch {
+          return null;
+        }
+      }
+
+      function playBirthdayFireworks() {
+        const context = audioCtx;
+        if (!context || context.state !== "running" || !noiseBuffer) return;
+
+        const now = context.currentTime + 0.08;
+        const boomOffsets = [0.45, 1.15, 1.85, 2.6, 3.35];
+
+        boomOffsets.forEach((offset, index) => {
+          const boomTime = now + offset;
+          let dest = audioMaster;
+
+          if (context.createStereoPanner) {
+            const panner = context.createStereoPanner();
+            const direction = index % 2 === 0 ? -1 : 1;
+            panner.pan.setValueAtTime(direction * (0.25 + Math.random() * 0.35), boomTime);
+            panner.connect(audioMaster);
+            dest = panner;
+          }
+
+          // rising launch whistle
+          const whistle = context.createOscillator();
+          const whistleGain = context.createGain();
+          const startFrequency = 480 + Math.random() * 280;
+          whistle.type = "sine";
+          whistle.frequency.setValueAtTime(startFrequency, boomTime - 0.36);
+          whistle.frequency.exponentialRampToValueAtTime(startFrequency * 2.5, boomTime - 0.03);
+          whistleGain.gain.setValueAtTime(0.0001, boomTime - 0.36);
+          whistleGain.gain.exponentialRampToValueAtTime(0.012, boomTime - 0.24);
+          whistleGain.gain.exponentialRampToValueAtTime(0.0001, boomTime - 0.03);
+          whistle.connect(whistleGain);
+          whistleGain.connect(dest);
+          whistle.start(boomTime - 0.37);
+          whistle.stop(boomTime);
+
+          // low boom
+          const boom = context.createOscillator();
+          const boomGain = context.createGain();
+          boom.type = "sine";
+          boom.frequency.setValueAtTime(130, boomTime);
+          boom.frequency.exponentialRampToValueAtTime(38, boomTime + 0.7);
+          boomGain.gain.setValueAtTime(0.0001, boomTime);
+          boomGain.gain.exponentialRampToValueAtTime(0.3, boomTime + 0.015);
+          boomGain.gain.exponentialRampToValueAtTime(0.0001, boomTime + 0.9);
+          boom.connect(boomGain);
+          boomGain.connect(dest);
+          boom.start(boomTime);
+          boom.stop(boomTime + 1);
+
+          // sharp crack
+          const crack = context.createBufferSource();
+          crack.buffer = noiseBuffer;
+          const crackFilter = context.createBiquadFilter();
+          crackFilter.type = "highpass";
+          crackFilter.frequency.value = 1600;
+          const crackGain = context.createGain();
+          crackGain.gain.setValueAtTime(0.0001, boomTime);
+          crackGain.gain.exponentialRampToValueAtTime(0.16, boomTime + 0.005);
+          crackGain.gain.exponentialRampToValueAtTime(0.0001, boomTime + 0.08);
+          crack.connect(crackFilter);
+          crackFilter.connect(crackGain);
+          crackGain.connect(dest);
+          crack.start(boomTime);
+          crack.stop(boomTime + 0.1);
+
+          // low noise body
+          const body = context.createBufferSource();
+          body.buffer = noiseBuffer;
+          const bodyFilter = context.createBiquadFilter();
+          bodyFilter.type = "lowpass";
+          bodyFilter.frequency.setValueAtTime(900, boomTime);
+          bodyFilter.frequency.exponentialRampToValueAtTime(220, boomTime + 0.6);
+          const bodyGain = context.createGain();
+          bodyGain.gain.setValueAtTime(0.0001, boomTime);
+          bodyGain.gain.exponentialRampToValueAtTime(0.08, boomTime + 0.02);
+          bodyGain.gain.exponentialRampToValueAtTime(0.0001, boomTime + 0.55);
+          body.connect(bodyFilter);
+          bodyFilter.connect(bodyGain);
+          bodyGain.connect(dest);
+          body.start(boomTime);
+          body.stop(boomTime + 0.65);
+
+          // crackling embers
+          const crackleCount = 7 + Math.floor(Math.random() * 5);
+          for (let c = 0; c < crackleCount; c += 1) {
+            const when = boomTime + 0.35 + Math.random() * 1;
+            const source = context.createBufferSource();
+            source.buffer = noiseBuffer;
+            const filter = context.createBiquadFilter();
+            filter.type = "bandpass";
+            filter.frequency.value = 2200 + Math.random() * 2200;
+            filter.Q.value = 1.2;
+            const gain = context.createGain();
+            gain.gain.setValueAtTime(0.0001, when);
+            gain.gain.exponentialRampToValueAtTime(0.015 + Math.random() * 0.02, when + 0.004);
+            gain.gain.exponentialRampToValueAtTime(0.0001, when + 0.04);
+            source.connect(filter);
+            filter.connect(gain);
+            gain.connect(dest);
+            source.start(when);
+            source.stop(when + 0.05);
+          }
+        });
+      }
+
+      function clearSoundPrompt() {
+        window.clearTimeout(soundPromptTimer);
+        soundPrompt.hidden = true;
+      }
+
+      function showSoundPrompt() {
+        if (!introActive || soundStarted) return;
+        soundPrompt.hidden = false;
+      }
+
+      function startBirthdaySound() {
+        if (!introActive || soundStarted) return;
+
+        const context = getAudioContext();
+        if (!context) return;
+
+        const play = () => {
+          if (!introActive || soundStarted || context.state !== "running") return;
+
+          soundStarted = true;
+          playBirthdayFireworks();
+          clearSoundPrompt();
+          celebrateNow();
+        };
+
+        if (context.state === "running") {
+          play();
+          return;
+        }
+
+        context.resume().then(play).catch(() => {});
+      }
+
+      function setupBirthdayAudio() {
+        const context = getAudioContext();
+        if (!context) return;
+
+        startBirthdaySound();
+
+        if (!soundStarted) {
+          soundPromptTimer = window.setTimeout(() => {
+            if (introActive && !soundStarted) showSoundPrompt();
+          }, 700);
+        }
+      }
+
+      function endBirthdayAudio() {
+        clearSoundPrompt();
+
+        if (audioCtx && audioMaster) {
+          try {
+            const now = audioCtx.currentTime;
+            audioMaster.gain.cancelScheduledValues(now);
+            audioMaster.gain.setValueAtTime(Math.max(0.0001, audioMaster.gain.value), now);
+            audioMaster.gain.linearRampToValueAtTime(0.0001, now + 0.5);
+          } catch {
+            /* no-op */
+          }
+        }
+      }
+
+      /* ==========================================================
+         RESULT MODAL
+         ========================================================== */
+
+      function openResult() {
+        modalOpen = true;
+        closing = false;
+        spinBtn.disabled = true;
+        window.clearTimeout(closeTimer);
+        overlay.hidden = false;
+        stage.inert = true;
+
+        requestAnimationFrame(() => {
+          if (!modalOpen) return;
+          overlay.classList.add("is-open");
+          resultWindow.focus({ preventScroll: true });
+          startFireworks();
+        });
+      }
+
+      function closeResult() {
+        if (!modalOpen || closing) return;
+
+        closing = true;
+        overlay.classList.remove("is-open");
+        stopFireworks();
+        window.clearTimeout(closeTimer);
+
+        const finish = () => {
+          modalOpen = false;
+          closing = false;
+          overlay.hidden = true;
+          stage.inert = false;
+          spinBtn.disabled = true;
+        };
+
+        if (reduceMotion) {
+          finish();
+        } else {
+          closeTimer = window.setTimeout(finish, 260);
+        }
+      }
+
+      /* ==========================================================
+         SPIN
+         ========================================================== */
+
+      function finishSpin(endRotation) {
+        rotation = norm360(endRotation);
+        spinning = false;
+        drawWheel();
+        wheelWrap.classList.remove("is-spinning");
+        stage.classList.add("is-finished");
+        openResult();
+      }
+
+      function spin() {
+        if (spinning || modalOpen || !ready || hasSpun) return;
+
+        hasSpun = true;
+        markUsed();
+        spinning = true;
+        spinBtn.disabled = true;
+        wheelWrap.classList.add("is-spinning");
+
+        const segment = 360 / SEGMENTS;
+        const winIndex = Math.floor(Math.random() * SEGMENTS);
+        const jitter = (Math.random() - 0.5) * segment * 0.56;
+        const targetMod = norm360(270 - (winIndex + 0.5) * segment + jitter);
+        const startRotation = rotation;
+        let delta = norm360(targetMod - norm360(startRotation));
+        if (delta < 20) delta += 360;
+
+        const turns = reduceMotion ? 1 : 6 + Math.floor(Math.random() * 3);
+        const endRotation = startRotation + delta + turns * 360;
+        const duration = reduceMotion ? 900 : 4300 + Math.random() * 700;
+        const startTime = performance.now();
+
+        function frame(now) {
+          const progress = Math.min(1, (now - startTime) / duration);
+          const eased = 1 - Math.pow(1 - progress, 4);
+          rotation = startRotation + (endRotation - startRotation) * eased;
+          drawWheel();
+
+          if (progress < 1) {
+            requestAnimationFrame(frame);
+          } else {
+            finishSpin(endRotation);
+          }
+        }
+
+        requestAnimationFrame(frame);
+      }
+
+      /* ==========================================================
+         INTRO FLOW
+         ========================================================== */
+
+      function showPhotoStep() {
+        if (!introActive) return;
+
+        introActive = false;
+        endBirthdayAudio();
+
+        photoStep.hidden = false;
+        requestAnimationFrame(() => photoStep.classList.add("is-visible"));
+
+        intro.classList.add("is-leaving");
+        window.setTimeout(() => {
+          intro.hidden = true;
+          stopCelebration();
+        }, 820);
+
+        photoActive = true;
+      }
+
+      function showRoulette() {
+        if (!photoActive) return;
+
+        photoActive = false;
+        photoStep.classList.add("is-leaving");
+
+        window.setTimeout(() => {
+          photoStep.hidden = true;
+          stage.inert = false;
+          stage.removeAttribute("aria-hidden");
+          ready = true;
+        }, 720);
+      }
+
+      function showUsedState() {
+        introActive = false;
+        photoActive = false;
+        hasSpun = true;
+        ready = true;
+
+        intro.hidden = true;
+        photoStep.hidden = true;
+        stopCelebration();
+
+        stage.inert = false;
+        stage.removeAttribute("aria-hidden");
+        stage.classList.add("is-finished");
+        spinBtn.disabled = true;
+
+        requestAnimationFrame(() => openResult());
+      }
+
+      /* ==========================================================
+         EVENTS / BOOT
+         ========================================================== */
+
+      spinBtn.addEventListener("click", spin);
+      wheelCanvas.addEventListener("click", spin);
+      closeBtn.addEventListener("click", closeResult);
+      introContinue.addEventListener("click", showPhotoStep);
+      photoContinue.addEventListener("click", showRoulette);
+
+      soundPrompt.addEventListener("click", () => {
+        startBirthdaySound();
+      });
+
+      overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) closeResult();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && modalOpen) {
+          closeResult();
+          return;
+        }
+
+        if (event.code !== "Space" || event.repeat) return;
+        if (event.metaKey || event.ctrlKey || event.altKey) return;
+        if (!ready) return;
+
+        const target = event.target;
+        if (target instanceof Element && target.closest("button, a, input, textarea, select")) {
+          return;
+        }
+
+        if (modalOpen) return;
+        event.preventDefault();
+        spin();
+      });
+
+      if ("ResizeObserver" in window) {
+        new ResizeObserver(() => resizeCanvas()).observe(wheelWrap);
+      } else {
+        window.addEventListener("resize", resizeCanvas);
+      }
+
+      window.addEventListener("resize", () => {
+        if (celRunning) resizeCelebration();
+      });
+
+      resizeCanvas();
+
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => drawWheel()).catch(() => {});
+      }
+
+      if (hasUsedBefore()) {
+        showUsedState();
+      } else {
+        startCelebration();
+        setupBirthdayAudio();
+      }
+    })();
+  </script>
+</body>
+</html>
